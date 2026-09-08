@@ -598,10 +598,9 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   transform-origin:0 0;
   animation:labelOrbitC 13s linear infinite;
 }
-/* Certifications / Certificates now uses the same clean orbital treatment as every other item. */
-.planet-item:nth-child(3) .thread,
-.planet-item:nth-child(3)::after{
-  display:none !important;
+/* All planets stay suspended from their own thread; labels orbit separately. */
+.planet-item:nth-child(3) .thread{
+  display:block !important;
 }
 
 .planet-item:hover .planet-label,
