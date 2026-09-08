@@ -1,6 +1,4 @@
-# Prabal Shahi Portfolio
-
-A futuristic black/graphite/grey portfolio website inspired by the provided reference screenshots.
+# Portfolio Website
 
 ## Run locally
 
