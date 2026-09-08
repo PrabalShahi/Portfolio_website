@@ -565,6 +565,11 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   100% {transform:translate(-50%,-50%) rotate(360deg) translateX(34px) rotate(-360deg)}
 }
 
+@keyframes labelOrbitC{
+  0%   {transform:translate(-50%,-50%) rotate(0deg) translateX(44px) rotate(0deg)}
+  100% {transform:translate(-50%,-50%) rotate(360deg) translateX(44px) rotate(-360deg)}
+}
+
 /* All standard page labels orbit their own planet. */
 .planet-item .planet-label{
   position:absolute;
@@ -584,35 +589,25 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
 .planet-item:nth-child(4) .planet-label{animation:labelOrbitD 12s linear infinite}
 .planet-item:nth-child(5) .planet-label{animation:labelOrbitE 14s linear infinite reverse}
 
-/* Certification label stays readable as a two-line caption with a tiny connecting thread. */
+/* Certifications / Certificates also orbit its planet, with a short connecting thread. */
 .planet-item:nth-child(3) .planet-label{
-  top:68px;
+  top:43px;
   line-height:1.1;
-  max-width:118px;
+  max-width:150px;
   white-space:normal;
-  transform:none;
-  animation:none;
+  transform-origin:0 0;
+  animation:labelOrbitC 13s linear infinite;
 }
+/* Certifications / Certificates now uses the same clean orbital treatment as every other item. */
+.planet-item:nth-child(3) .thread,
 .planet-item:nth-child(3)::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:54px;
-  width:1px;
-  height:13px;
-  background:linear-gradient(to bottom,rgba(255,255,255,.75),rgba(255,255,255,.18));
-  box-shadow:0 0 4px rgba(255,255,255,.08);
-  transform:translateX(-50%);
-  z-index:1;
+  display:none !important;
 }
 
 .planet-item:hover .planet-label,
 .planet-item.active .planet-label{
   color:#f0f0f0;
-  transform:none;
 }
-.planet-item:nth-child(3):hover .planet-label,
-.planet-item:nth-child(3).active .planet-label{transform:none}
 
 @media(max-width:900px){
   .planet-item .planet-label{top:39px;font-size:7px}
@@ -620,17 +615,16 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   .planet-item:nth-child(2) .planet-label{animation-name:labelOrbitB}
   .planet-item:nth-child(4) .planet-label{animation-name:labelOrbitD}
   .planet-item:nth-child(5) .planet-label{animation-name:labelOrbitE}
-  .planet-item:nth-child(3) .planet-label{top:61px;max-width:95px}
-  .planet-item:nth-child(3)::after{top:49px;height:11px}
+  .planet-item:nth-child(3) .planet-label{top:43px;max-width:118px;animation-name:labelOrbitC}
 }
 @media(max-width:600px){
   .planet-item .planet-label{top:36px;font-size:6.2px}
-  .planet-item:nth-child(3) .planet-label{top:56px;max-width:78px}
-  .planet-item:nth-child(3)::after{top:45px;height:9px}
+  .planet-item:nth-child(3) .planet-label{top:40px;max-width:90px;animation-name:labelOrbitC}
 }
 @media(prefers-reduced-motion:reduce){
   .planet-item:nth-child(1) .planet-label,
   .planet-item:nth-child(2) .planet-label,
+  .planet-item:nth-child(3) .planet-label,
   .planet-item:nth-child(4) .planet-label,
-  .planet-item:nth-child(5) .planet-label{animation:none!important;transform:translate(-50%,-50%) translateX(34px)!important}
+  .planet-item:nth-child(5) .planet-label{animation:none!important;transform:translate(-50%,-50%) translateX(40px)!important}
 }
