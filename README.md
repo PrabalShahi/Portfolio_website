@@ -1,6 +1,6 @@
 # Prabal Shahi Portfolio
 
-A futuristic blue/cyan portfolio website inspired by the provided reference screenshots.
+A futuristic blue/cyan portfolio website.
 
 ## Run locally
 
