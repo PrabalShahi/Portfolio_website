@@ -90,3 +90,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
+
+// Cursor-reactive neutron-star logo.
+(() => {
+  const logo = document.querySelector('.pulsar-logo');
+  if (!logo || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const brand = logo.closest('.brand');
+  if (!brand) return;
+  brand.addEventListener('pointermove', (event) => {
+    const r = brand.getBoundingClientRect();
+    const dx = event.clientX - (r.left + 19);
+    const dy = event.clientY - (r.top + 19);
+    const rotY = Math.max(-12, Math.min(12, dx / 7));
+    const rotX = Math.max(-12, Math.min(12, -dy / 7));
+    logo.style.setProperty('--star-x', `${rotX}deg`);
+    logo.style.setProperty('--star-y', `${rotY}deg`);
+    logo.style.setProperty('--star-scale', '1.08');
+  });
+  brand.addEventListener('pointerleave', () => {
+    logo.style.setProperty('--star-x', '0deg');
+    logo.style.setProperty('--star-y', '0deg');
+    logo.style.setProperty('--star-scale', '1');
+  });
+})();

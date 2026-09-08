@@ -463,3 +463,84 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
 @media(prefers-reduced-motion:reduce){
   .planet-item,.planet-item .thread,.planet-item .planet,.planet-label,.home-page:before,.home-page:after,.black-hole{animation:none!important;transition:none!important}
 }
+
+
+/* =====================================
+   Monochrome pulsar / neutron-star logo
+   ===================================== */
+.brand{gap:12px;min-height:42px}
+.pulsar-logo{
+  --star-x:0deg;
+  --star-y:0deg;
+  --star-scale:1;
+  position:relative;
+  width:38px;
+  height:38px;
+  display:block;
+  flex:0 0 38px;
+  transform:perspective(140px) rotateX(var(--star-x)) rotateY(var(--star-y)) scale(var(--star-scale));
+  transform-style:preserve-3d;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),filter .35s ease;
+  filter:drop-shadow(0 0 8px rgba(255,255,255,.13));
+}
+.pulsar-logo:before,
+.pulsar-logo:after{
+  content:"";
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.pulsar-logo:before{
+  width:7px;height:7px;
+  background:#fff;
+  box-shadow:0 0 7px rgba(255,255,255,.95),0 0 18px rgba(255,255,255,.45),0 0 30px rgba(255,255,255,.17);
+  z-index:5;
+}
+.pulsar-logo:after{
+  width:13px;height:13px;
+  background:radial-gradient(circle at 35% 30%,#fff,#cfcfcf 25%,#666 55%,#151515 100%);
+  box-shadow:inset -2px -3px 4px rgba(0,0,0,.65), inset 2px 1px 3px rgba(255,255,255,.48), 0 0 12px rgba(255,255,255,.22);
+  z-index:4;
+}
+.pulsar-core{
+  position:absolute;
+  left:50%;top:50%;
+  width:17px;height:17px;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(255,255,255,.45);
+  border-radius:50%;
+  box-shadow:0 0 0 1px rgba(0,0,0,.35),0 0 16px rgba(255,255,255,.12);
+  z-index:3;
+  animation:pulsarPulse 1.6s ease-in-out infinite;
+}
+.pulsar-ring{
+  position:absolute;
+  left:50%;top:50%;
+  width:36px;height:12px;
+  transform:translate(-50%,-50%) rotate(-18deg);
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:50%;
+  box-shadow:0 0 10px rgba(255,255,255,.12);
+  transform-origin:center;
+}
+.ring-one{animation:orbitSpin 2.8s linear infinite}
+.ring-two{width:30px;height:9px;border-color:rgba(255,255,255,.22);transform:translate(-50%,-50%) rotate(56deg);animation:orbitSpinReverse 2s linear infinite}
+.pulsar-beam{
+  position:absolute;
+  left:50%;top:50%;
+  width:3px;height:42px;
+  transform-origin:center;
+  background:linear-gradient(to bottom,transparent 0%,rgba(255,255,255,.14) 22%,rgba(255,255,255,.88) 50%,rgba(255,255,255,.14) 78%,transparent 100%);
+  filter:blur(.25px);
+  opacity:.7;
+  z-index:1;
+}
+.beam-one{transform:translate(-50%,-50%) rotate(19deg);animation:beamBreath 1.9s ease-in-out infinite}
+.beam-two{transform:translate(-50%,-50%) rotate(199deg);animation:beamBreath 1.9s ease-in-out -.95s infinite}
+@keyframes orbitSpin{from{transform:translate(-50%,-50%) rotate(-18deg) rotateZ(0)}to{transform:translate(-50%,-50%) rotate(-18deg) rotateZ(360deg)}}
+@keyframes orbitSpinReverse{from{transform:translate(-50%,-50%) rotate(56deg) rotateZ(360deg)}to{transform:translate(-50%,-50%) rotate(56deg) rotateZ(0)}}
+@keyframes beamBreath{0%,100%{opacity:.42;filter:blur(.4px)}50%{opacity:.86;filter:blur(.15px)}}
+@keyframes pulsarPulse{0%,100%{transform:translate(-50%,-50%) scale(.92);box-shadow:0 0 0 1px rgba(0,0,0,.35),0 0 10px rgba(255,255,255,.10)}50%{transform:translate(-50%,-50%) scale(1.06);box-shadow:0 0 0 1px rgba(0,0,0,.35),0 0 21px rgba(255,255,255,.18)}}
+@media(prefers-reduced-motion:reduce){.pulsar-ring,.pulsar-beam,.pulsar-core{animation:none!important}}
