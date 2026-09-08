@@ -1,6 +1,6 @@
 # Prabal Shahi Portfolio
 
-A futuristic blue/cyan portfolio website.
+A futuristic black/graphite/grey portfolio website inspired by the provided reference screenshots.
 
 ## Run locally
 
@@ -21,7 +21,6 @@ Upload this folder as a project or push it to GitHub and import it into Vercel. 
 ## Files
 
 - `index.html` — home/about
-- `education.html`
 - `training.html`
 - `projects.html`
 - `certifications.html`
