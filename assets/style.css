@@ -274,3 +274,192 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
 .contact-grid{grid-template-columns:repeat(3,minmax(0,1fr))}@keyframes statusPulse{0%,100%{opacity:.45;transform:scale(.86)}50%{opacity:1;transform:scale(1.08)}}
 @media(max-width:900px){.about-hero{grid-template-columns:1fr;gap:44px;padding-top:64px}.about-console{justify-self:stretch;max-width:none}.about-meta{grid-template-columns:1fr 1fr}.about-meta div:nth-child(2){border-right:0}.about-meta div:nth-child(3){grid-column:1/-1;border-right:0;padding-top:6px}.contact-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.about-hero{padding-left:18px;padding-right:18px}.about-hero h1{font-size:47px}.status-line{font-size:8px}.hero-copy-text{font-size:14px}.about-meta{grid-template-columns:1fr}.about-meta div{border-right:0;padding:0}.about-meta div:nth-child(3){grid-column:auto}.console-line{grid-template-columns:24px 78px 1fr;font-size:9px}}
+
+/* ==============================
+   Planetary navigation system
+   ============================== */
+.topbar{
+  position:sticky;
+  top:10px;
+  z-index:50;
+  max-width:1180px;
+  margin:10px auto 0;
+  padding:0 16px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:start;
+  gap:22px;
+  pointer-events:none;
+}
+.topbar > *{pointer-events:auto}
+.brand{align-self:center;margin-top:3px;}
+.planet-nav{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  gap:clamp(18px,3vw,42px);
+  min-height:92px;
+  position:relative;
+  padding:0 12px;
+}
+.planet-item{
+  --tilt:0deg;
+  --px:0px;
+  --py:0px;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:92px;
+  min-height:92px;
+  color:#8b8b8b;
+  transform:translate3d(var(--px),var(--py),0) rotate(var(--tilt));
+  transition:transform .24s cubic-bezier(.2,.8,.2,1);
+}
+.planet-item .thread{
+  width:1px;
+  height:29px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.18),rgba(255,255,255,.55));
+  box-shadow:0 0 5px rgba(255,255,255,.06);
+  transform-origin:top center;
+  transition:transform .24s ease,height .24s ease,background .24s ease;
+}
+.planet-item .planet{
+  width:27px;
+  height:27px;
+  margin-top:-1px;
+  border-radius:50%;
+  position:relative;
+  border:1px solid #777;
+  background:
+    radial-gradient(circle at 32% 28%,rgba(255,255,255,.28),transparent 20%),
+    radial-gradient(circle at 62% 66%,#535353 0 9%,transparent 10%),
+    radial-gradient(circle at 42% 48%,#bdbdbd 0 20%,#565656 53%,#171717 100%);
+  box-shadow:0 0 0 3px rgba(255,255,255,.018),0 6px 16px rgba(0,0,0,.5);
+  transition:transform .26s ease,box-shadow .26s ease,border-color .26s ease;
+}
+.planet-item .planet:after{
+  content:"";
+  position:absolute;
+  inset:4px -4px;
+  border-top:1px solid rgba(255,255,255,.14);
+  border-bottom:1px solid rgba(0,0,0,.45);
+  border-radius:50%;
+  transform:rotate(-17deg);
+}
+.planet-a{background:radial-gradient(circle at 30% 28%,#f2f2f2 0 14%,#bdbdbd 15% 30%,#4d4d4d 60%,#111 100%) !important}
+.planet-b{background:radial-gradient(circle at 30% 25%,#ddd 0 12%,#878787 13% 35%,#3f3f3f 58%,#0f0f0f 100%) !important}
+.planet-c{background:radial-gradient(circle at 35% 30%,#f1f1f1 0 10%,#9b9b9b 11% 28%,#5e5e5e 50%,#121212 100%) !important}
+.planet-d{background:radial-gradient(circle at 55% 32%,#ededed 0 11%,#777 12% 36%,#383838 58%,#0c0c0c 100%) !important}
+.planet-e{background:radial-gradient(circle at 27% 33%,#f5f5f5 0 13%,#a6a6a6 14% 31%,#4a4a4a 55%,#111 100%) !important}
+.planet-label{
+  margin-top:8px;
+  width:max-content;
+  max-width:110px;
+  text-align:center;
+  color:#7e7e7e;
+  font:600 8px/1.25 'JetBrains Mono',monospace;
+  letter-spacing:.02em;
+  transition:color .22s ease,transform .22s ease;
+}
+.planet-item:hover .planet,
+.planet-item.active .planet{
+  transform:scale(1.18);
+  border-color:#d3d3d3;
+  box-shadow:0 0 16px rgba(255,255,255,.1),0 7px 18px rgba(0,0,0,.6);
+}
+.planet-item:hover .planet-label,
+.planet-item.active .planet-label{color:#f0f0f0;transform:translateY(2px)}
+.planet-item.active .thread{background:linear-gradient(to bottom,rgba(255,255,255,.2),rgba(255,255,255,.8));}
+.socials{align-self:center;margin-top:7px}
+.nav-pill{display:none !important}
+
+/* ==============================
+   About page: cosmic background
+   ============================== */
+.home-page{position:relative;isolation:isolate;overflow:hidden}
+.home-page:before,
+.home-page:after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  inset:-30%;
+  z-index:-4;
+}
+.home-page:before{
+  background:
+    radial-gradient(ellipse at 20% 25%,rgba(255,255,255,.035),transparent 17%),
+    radial-gradient(ellipse at 80% 65%,rgba(255,255,255,.025),transparent 20%),
+    radial-gradient(ellipse at 56% 42%,rgba(255,255,255,.018),transparent 24%);
+  animation:cosmicDrift 22s ease-in-out infinite alternate;
+}
+.home-page:after{
+  background:radial-gradient(circle at 50% 50%,transparent 0 38%,rgba(255,255,255,.018) 39%,transparent 43%);
+  filter:blur(2px);
+  animation:ringDrift 30s linear infinite;
+}
+.black-hole{
+  position:absolute;
+  width:230px;
+  height:230px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.78;
+  filter:drop-shadow(0 12px 35px rgba(0,0,0,.65));
+  animation:blackHoleFloat 13s ease-in-out infinite alternate;
+}
+.black-hole-one{left:-42px;top:22%;transform:scale(.78)}
+.black-hole-two{right:-18px;bottom:10%;transform:scale(1.12);animation-delay:-5s}
+.hole-ring{
+  position:absolute;
+  inset:17px;
+  border-radius:50%;
+  background:conic-gradient(from 25deg,rgba(255,255,255,.03),rgba(205,205,205,.26),rgba(80,80,80,.10),rgba(235,235,235,.2),rgba(255,255,255,.03));
+  filter:blur(7px);
+  transform:rotate(-16deg) scaleY(.36);
+  box-shadow:0 0 35px rgba(255,255,255,.08);
+}
+.hole-ring:after{
+  content:"";
+  position:absolute;
+  inset:10px 3px;
+  border:2px solid rgba(224,224,224,.22);
+  border-radius:50%;
+}
+.hole-core{
+  position:absolute;
+  inset:55px;
+  border-radius:50%;
+  background:#000;
+  box-shadow:0 0 0 11px rgba(0,0,0,.72),0 0 35px rgba(0,0,0,.95);
+}
+@keyframes cosmicDrift{from{transform:translate3d(-3%,-2%,0) scale(1)}to{transform:translate3d(3%,2%,0) scale(1.06)}}
+@keyframes ringDrift{from{transform:rotate(0deg) scale(1)}to{transform:rotate(360deg) scale(1.04)}}
+@keyframes blackHoleFloat{from{translate:0 0}to{translate:0 -14px}}
+
+/* About metadata is intentionally limited to focus and stack. */
+.about-meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+.about-meta div:last-child{border-right:0}
+
+@media(max-width:900px){
+  .topbar{grid-template-columns:1fr;gap:4px;align-items:center}
+  .brand{justify-content:center}
+  .planet-nav{order:2;gap:14px;min-height:78px}
+  .socials{display:none}
+  .planet-item{width:76px;min-height:78px}
+  .planet-item .thread{height:23px}
+  .planet-label{font-size:7px;max-width:90px}
+  .black-hole-one{left:-82px;top:25%;transform:scale(.55)}
+  .black-hole-two{right:-76px;bottom:14%;transform:scale(.72)}
+}
+@media(max-width:600px){
+  .planet-nav{gap:5px;padding:0}
+  .planet-item{width:64px}
+  .planet-label{font-size:6.5px;max-width:70px}
+  .planet-item .planet{width:23px;height:23px}
+  .about-meta{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .planet-item,.planet-item .thread,.planet-item .planet,.planet-label,.home-page:before,.home-page:after,.black-hole{animation:none!important;transition:none!important}
+}

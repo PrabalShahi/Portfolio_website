@@ -58,4 +58,35 @@ document.addEventListener('DOMContentLoaded', () => {
       if (stars) stars.style.transform = `translate(${x * 0.08}px, ${y * 0.08}px)`;
     }, { passive: true });
   }
+
+  // Planetary navigation: each hanging planet subtly follows the cursor.
+  const navItems = [...document.querySelectorAll('.planet-item')];
+  if (navItems.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const resetPlanets = () => navItems.forEach(item => {
+      item.style.setProperty('--px', '0px');
+      item.style.setProperty('--py', '0px');
+      item.style.setProperty('--tilt', '0deg');
+    });
+    window.addEventListener('pointermove', (event) => {
+      navItems.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + 24;
+        const dx = event.clientX - cx;
+        const dy = event.clientY - cy;
+        const distance = Math.hypot(dx, dy);
+        const influence = Math.max(0, 1 - distance / 340);
+        const px = (dx / 340) * 12 * influence;
+        const py = (dy / 260) * 7 * influence;
+        const tilt = (dx / 340) * 7 * influence;
+        item.style.setProperty('--px', `${px.toFixed(2)}px`);
+        item.style.setProperty('--py', `${py.toFixed(2)}px`);
+        item.style.setProperty('--tilt', `${tilt.toFixed(2)}deg`);
+        const thread = item.querySelector('.thread');
+        if (thread) thread.style.transform = `rotate(${(dx/420*8*influence).toFixed(2)}deg)`;
+      });
+    }, {passive:true});
+    window.addEventListener('blur', resetPlanets);
+  }
+
 });
