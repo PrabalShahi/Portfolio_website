@@ -544,3 +544,93 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
 @keyframes beamBreath{0%,100%{opacity:.42;filter:blur(.4px)}50%{opacity:.86;filter:blur(.15px)}}
 @keyframes pulsarPulse{0%,100%{transform:translate(-50%,-50%) scale(.92);box-shadow:0 0 0 1px rgba(0,0,0,.35),0 0 10px rgba(255,255,255,.10)}50%{transform:translate(-50%,-50%) scale(1.06);box-shadow:0 0 0 1px rgba(0,0,0,.35),0 0 21px rgba(255,255,255,.18)}}
 @media(prefers-reduced-motion:reduce){.pulsar-ring,.pulsar-beam,.pulsar-core{animation:none!important}}
+
+/* =====================================
+   Orbital page-label navigation
+   ===================================== */
+@keyframes labelOrbitA{
+  0%   {transform:translate(-50%,-50%) rotate(0deg) translateX(34px) rotate(0deg)}
+  100% {transform:translate(-50%,-50%) rotate(360deg) translateX(34px) rotate(-360deg)}
+}
+@keyframes labelOrbitB{
+  0%   {transform:translate(-50%,-50%) rotate(0deg) translateX(36px) rotate(0deg)}
+  100% {transform:translate(-50%,-50%) rotate(360deg) translateX(36px) rotate(-360deg)}
+}
+@keyframes labelOrbitD{
+  0%   {transform:translate(-50%,-50%) rotate(0deg) translateX(34px) rotate(0deg)}
+  100% {transform:translate(-50%,-50%) rotate(360deg) translateX(34px) rotate(-360deg)}
+}
+@keyframes labelOrbitE{
+  0%   {transform:translate(-50%,-50%) rotate(0deg) translateX(34px) rotate(0deg)}
+  100% {transform:translate(-50%,-50%) rotate(360deg) translateX(34px) rotate(-360deg)}
+}
+
+/* All standard page labels orbit their own planet. */
+.planet-item .planet-label{
+  position:absolute;
+  left:50%;
+  top:43px;
+  margin:0;
+  z-index:2;
+  pointer-events:none;
+  white-space:nowrap;
+  width:max-content;
+  max-width:none;
+  transform-origin:0 0;
+  transition:color .22s ease;
+}
+.planet-item:nth-child(1) .planet-label{animation:labelOrbitA 11s linear infinite}
+.planet-item:nth-child(2) .planet-label{animation:labelOrbitB 13s linear infinite reverse}
+.planet-item:nth-child(4) .planet-label{animation:labelOrbitD 12s linear infinite}
+.planet-item:nth-child(5) .planet-label{animation:labelOrbitE 14s linear infinite reverse}
+
+/* Certification label stays readable as a two-line caption with a tiny connecting thread. */
+.planet-item:nth-child(3) .planet-label{
+  top:68px;
+  line-height:1.1;
+  max-width:118px;
+  white-space:normal;
+  transform:none;
+  animation:none;
+}
+.planet-item:nth-child(3)::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:54px;
+  width:1px;
+  height:13px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.75),rgba(255,255,255,.18));
+  box-shadow:0 0 4px rgba(255,255,255,.08);
+  transform:translateX(-50%);
+  z-index:1;
+}
+
+.planet-item:hover .planet-label,
+.planet-item.active .planet-label{
+  color:#f0f0f0;
+  transform:none;
+}
+.planet-item:nth-child(3):hover .planet-label,
+.planet-item:nth-child(3).active .planet-label{transform:none}
+
+@media(max-width:900px){
+  .planet-item .planet-label{top:39px;font-size:7px}
+  .planet-item:nth-child(1) .planet-label{animation-name:labelOrbitA}
+  .planet-item:nth-child(2) .planet-label{animation-name:labelOrbitB}
+  .planet-item:nth-child(4) .planet-label{animation-name:labelOrbitD}
+  .planet-item:nth-child(5) .planet-label{animation-name:labelOrbitE}
+  .planet-item:nth-child(3) .planet-label{top:61px;max-width:95px}
+  .planet-item:nth-child(3)::after{top:49px;height:11px}
+}
+@media(max-width:600px){
+  .planet-item .planet-label{top:36px;font-size:6.2px}
+  .planet-item:nth-child(3) .planet-label{top:56px;max-width:78px}
+  .planet-item:nth-child(3)::after{top:45px;height:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .planet-item:nth-child(1) .planet-label,
+  .planet-item:nth-child(2) .planet-label,
+  .planet-item:nth-child(4) .planet-label,
+  .planet-item:nth-child(5) .planet-label{animation:none!important;transform:translate(-50%,-50%) translateX(34px)!important}
+}
