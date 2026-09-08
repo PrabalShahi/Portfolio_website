@@ -1,67 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Projects — Prabal Shahi portfolio." />
-  <title>Projects | Prabal Shahi</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Rajdhani:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css" />
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <meta name="description" content="Projects — Prabal Shahi portfolio." />
+ <title>Projects | Prabal Shahi</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Rajdhani:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body class="page-shell">
-  <div class="grid-bg"></div><div class="stars" aria-hidden="true"></div>
-  <header class="topbar">
-    <a class="brand" href="index.html"><span class="terminal-icon">&gt;_</span><span>PRABAL <b>SHAHI</b></span></a>
-    <nav class="nav-pill"><a href="index.html">ABOUT</a><a href="training.html">TRAINING</a><a class="active" href="projects.html">PROJECTS</a><a href="certifications.html">CERTIFICATIONS</a><a href="skills.html">SKILLS HUD</a><a href="resume.html">CV / RESUME</a><a href="contact.html">CONTACT</a></nav>
-    <div class="socials">
-      <a href="https://github.com/PrabalShahi" target="_blank" rel="noreferrer">GH</a>
-      <a href="https://www.linkedin.com/in/prabal-s-shahi/" target="_blank" rel="noreferrer">in</a>
-    </div>
-  </header>
-  <main class="container">
+ <div class="grid-bg"></div><div class="stars" aria-hidden="true"></div>
+ <header class="topbar">
+  <a class="brand" href="index.html"><span class="terminal-icon">&gt;_</span><span>PRABAL <b>SHAHI</b></span></a>
+  <nav class="nav-pill"><a href="index.html">ABOUT</a><a class="active" href="projects.html">PROJECTS</a><a href="certifications.html">CERTIFICATIONS / CERTIFICATES</a><a href="skills.html">SKILLS</a><a href="resume.html">CV / RESUME</a><a href="contact.html">CONTACT</a></nav>
+  <div class="socials">
+   <a href="https://github.com/PrabalShahi" target="_blank" rel="noreferrer">GH</a>
+   <a href="https://www.linkedin.com/in/prabal-s-shahi/" target="_blank" rel="noreferrer">in</a>
+  </div>
+ </header>
+ <main class="container">
 <section class="page-intro centered">
-  <h1>PROJECTS</h1>
-  <div class="filter-row"><span class="filter active">ALL</span><span class="filter">TRADING SYSTEMS</span><span class="filter">DATA SCIENCE</span><span class="filter">C++</span></div>
+ <h1>PROJECTS</h1>
+ <div class="filter-row" aria-label="Project categories"><button class="filter active" type="button" data-filter="all" aria-pressed="true">ALL</button><button class="filter" type="button" data-filter="data" aria-pressed="false">DATA SCIENCE</button><button class="filter" type="button" data-filter="cpp" aria-pressed="false">C++</button></div>
 </section>
 
-<article class="project-card">
-  <div class="card-top"><div><span class="tag">C++</span><span class="tag">TRADING SYSTEM</span></div><span class="date">AUG’26</span></div>
-  <h2>Carbon Trading System</h2>
-  <p class="project-summary">A modular C++ trading system simulator for carbon market trading. It processes simulated market data, detects arbitrage opportunities, performs risk validation, executes simulated trades, and logs trading activity.</p>
-  <div class="subhead">FEATURES</div>
-  <div class="feature-grid">
-    <span>Market data ingestion from CSV files</span><span>Market data feed normalization</span>
-    <span>Currency normalization</span><span>Spread calculation</span>
-    <span>Arbitrage detection (cross-exchange)</span><span>Risk management</span>
-    <span>Simulated trade execution</span><span>Logging</span>
-  </div>
-  <div class="stack-row"><span>TECH STACK</span><b>C++</b><a href="https://github.com/PrabalShahi/Carbon-Trading-System" target="_blank" rel="noreferrer">https://github.com/PrabalShahi/Carbon-Trading-System ↗</a></div>
+<article class="project-card" data-category="cpp">
+ <div class="card-top"><div><span class="tag">C++</span><span class="tag">TRADING SYSTEM</span></div><span class="date">AUG’26</span></div>
+ <h2>Carbon Trading System</h2>
+ <p class="project-summary">A modular C++ trading system simulator for carbon market trading. It processes simulated market data, detects arbitrage opportunities, performs risk validation, executes simulated trades, and logs trading activity.</p>
+ <div class="subhead">FEATURES</div>
+ <div class="feature-grid">
+  <span>Market data ingestion from CSV files</span><span>Market data feed normalization</span>
+  <span>Currency normalization</span><span>Spread calculation</span>
+  <span>Arbitrage detection (cross-exchange)</span><span>Risk management</span>
+  <span>Simulated trade execution</span><span>Logging</span>
+ </div>
+ <div class="stack-row"><span>TECH STACK</span><b>C++</b><a href="https://github.com/PrabalShahi/Carbon-Trading-System" target="_blank" rel="noreferrer">https://github.com/PrabalShahi/Carbon-Trading-System ↗</a></div>
 </article>
 
-<article class="project-card">
-  <div class="card-top"><div><span class="tag">DATA SCIENCE</span><span class="tag">POWER BI</span></div><span class="date">MAY’26</span></div>
-  <h2>Global Health Expenditure vs. Mortality Outcomes</h2>
-  <ul class="check-list">
-    <li>Analyzed 20 years of global health data to identify relationships between expenditure,mortality, UHC coverage, infrastructure, and financial risk.</li>
-    <li>Cleaned and preprocessed data, handledmissing values, engineered analytical metrics, and performed statistical analysis using SciPy.</li>
-    <li>Identified healthcare efficiency, rural-urban disparities, financial risks, and system-level trends through descriptive analysis and Power BI dashboards.</li>
-  </ul>
-  <div class="stack-row"><span>TECH STACK</span><b>Python, Pandas, NumPy, SciPy,Matplotlib, Seaborn, Power BI, Google Colab</b></div>
+<article class="project-card" data-category="cpp">
+ <div class="card-top"><div><span class="tag">C++</span><span class="tag">OOP</span></div><span class="date">JUL’26</span></div>
+ <h2>OrderBook Matching Engine</h2>
+ <p class="project-summary">A cryptocurrency exchange platform built incrementally over five courses, showcasing programming techniques from control flow and file parsing to object-oriented design and console interaction.</p>
+ <div class="feature-grid compact">
+  <span>Object-Oriented Design</span><span>Data Handling</span><span>Interactive Console</span><span>File Parsing</span><span>Control Flow</span>
+ </div>
+ <div class="stack-row"><span>TECH STACK</span><b>C++</b><a href="https://github.com/PrabalShahi/OrderBook-Matching-Engine" target="_blank" rel="noreferrer">https://github.com/PrabalShahi/OrderBook-Matching-Engine ↗</a></div>
 </article>
 
-<article class="project-card">
-  <div class="card-top"><div><span class="tag">C++</span><span class="tag">OOP</span></div><span class="date">JUL’26</span></div>
-  <h2>OrderBook Matching Engine</h2>
-  <p class="project-summary">A cryptocurrency exchange platform built incrementally over five courses, showcasing programming techniques from control flow and file parsing to object-oriented design and console interaction.</p>
-  <div class="feature-grid compact">
-    <span>Object-Oriented Design</span><span>Data Handling</span><span>Interactive Console</span><span>File Parsing</span><span>Control Flow</span>
-  </div>
-  <div class="stack-row"><span>TECH STACK</span><b>C++</b><a href="https://github.com/PrabalShahi/OrderBook-Matching-Engine" target="_blank" rel="noreferrer">https://github.com/PrabalShahi/OrderBook-Matching-Engine ↗</a></div>
+<article class="project-card" data-category="data">
+ <div class="card-top"><div><span class="tag">DATA SCIENCE</span><span class="tag">DATA ANALYSIS</span></div></div>
+ <h2>The Final Voyage: A Data-Driven Analysis of Ship Recycling Industry</h2>
+ <p class="project-summary">Analyzed a dataset of over 7,582 end-of-life vessels to uncover the geographic, ownership, lifespan, market, and recycling trends shaping the global ship recycling industry.</p>
+ <div class="subhead">KEY FINDINGS</div>
+ <div class="feature-grid">
+  <span>Geographic concentration in India, Bangladesh, Pakistan, and Turkey</span>
+  <span>Ownership concentrated among Greece, China, and Germany</span>
+  <span>Average vessel lifespan at recycling: 29.5 years</span>
+  <span>288.7M total gross tonnage scrapped</span>
+  <span>403.4M total deadweight tonnage scrapped</span>
+  <span>Analysis of charter rates, BDI, flags, destinations, and recovered metals</span>
+ </div>
+ <div class="stack-row"><span>PROJECT TYPE</span><b>Data Analysis &amp; Visualization</b></div>
+</article>
+
+<article class="project-card" data-category="data">
+ <div class="card-top"><div><span class="tag">DATA SCIENCE</span><span class="tag">POWER BI</span></div><span class="date">MAY’26</span></div>
+ <h2>Global Health Expenditure vs. Mortality Outcomes</h2>
+ <ul class="check-list">
+  <li>Analyzed 20 years of global health data to identify relationships between expenditure,mortality, UHC coverage, infrastructure, and financial risk.</li>
+  <li>Cleaned and preprocessed data, handledmissing values, engineered analytical metrics, and performed statistical analysis using SciPy.</li>
+  <li>Identified healthcare efficiency, rural-urban disparities, financial risks, and system-level trends through descriptive analysis and Power BI dashboards.</li>
+ </ul>
+ <div class="stack-row"><span>TECH STACK</span><b>Python, Pandas, NumPy, SciPy,Matplotlib, Seaborn, Power BI, Google Colab</b><a href="https://github.com/rohitranjankumar-01/Global-Health-Expenditure-vs-Mortality-Outcome" target="_blank" rel="noreferrer">https://github.com/rohitranjankumar-01/Global-Health-Expenditure-vs-Mortality-Outcome ↗</a></div>
 </article>
 </main>
-  <footer class="site-footer"><span>›_ © 2026 Prabal Shahi. All rights reserved.</span><span>Get in touch →</span></footer>
-  <script src="assets/app.js"></script>
+ <footer class="site-footer"><span>›_ © 2026 Prabal Shahi. All rights reserved.</span><span>Get in touch →</span></footer>
+ <script src="assets/app.js"></script>
 </body>
 </html>
