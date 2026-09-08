@@ -318,40 +318,100 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
 }
 .planet-item .thread{
   width:1px;
-  height:29px;
+  height:31px;
   background:linear-gradient(to bottom,rgba(255,255,255,.18),rgba(255,255,255,.55));
   box-shadow:0 0 5px rgba(255,255,255,.06);
   transform-origin:top center;
   transition:transform .24s ease,height .24s ease,background .24s ease;
 }
 .planet-item .planet{
-  width:27px;
-  height:27px;
+  width:32px;
+  height:32px;
   margin-top:-1px;
   border-radius:50%;
   position:relative;
-  border:1px solid #777;
+  overflow:visible;
+  border:1px solid rgba(255,255,255,.42);
   background:
-    radial-gradient(circle at 32% 28%,rgba(255,255,255,.28),transparent 20%),
-    radial-gradient(circle at 62% 66%,#535353 0 9%,transparent 10%),
-    radial-gradient(circle at 42% 48%,#bdbdbd 0 20%,#565656 53%,#171717 100%);
-  box-shadow:0 0 0 3px rgba(255,255,255,.018),0 6px 16px rgba(0,0,0,.5);
+    radial-gradient(circle at 29% 24%,rgba(255,255,255,.92) 0 4%,rgba(255,255,255,.35) 5% 10%,transparent 16%),
+    radial-gradient(circle at 68% 70%,rgba(0,0,0,.48) 0 7%,transparent 8%),
+    radial-gradient(circle at 39% 62%,rgba(0,0,0,.28) 0 5%,transparent 6%),
+    radial-gradient(circle at 72% 38%,rgba(255,255,255,.15) 0 6%,transparent 7%),
+    radial-gradient(circle at 35% 42%,#cfcfcf 0 18%,#858585 43%,#3d3d3d 70%,#0b0b0b 100%);
+  box-shadow:
+    inset -7px -7px 12px rgba(0,0,0,.62),
+    inset 5px 5px 8px rgba(255,255,255,.14),
+    0 0 0 2px rgba(255,255,255,.025),
+    0 8px 18px rgba(0,0,0,.68),
+    0 0 12px rgba(255,255,255,.055);
+  transform:translateZ(0);
   transition:transform .26s ease,box-shadow .26s ease,border-color .26s ease;
+}
+.planet-item .planet:before{
+  content:"";
+  position:absolute;
+  inset:2px;
+  border-radius:50%;
+  opacity:.42;
+  background:
+    radial-gradient(circle at 24% 66%,rgba(255,255,255,.18) 0 7%,transparent 8%),
+    radial-gradient(circle at 58% 29%,rgba(0,0,0,.18) 0 8%,transparent 9%),
+    radial-gradient(circle at 71% 57%,rgba(0,0,0,.20) 0 5%,transparent 6%),
+    radial-gradient(circle at 43% 74%,rgba(255,255,255,.10) 0 4%,transparent 5%);
+  mix-blend-mode:overlay;
 }
 .planet-item .planet:after{
   content:"";
   position:absolute;
-  inset:4px -4px;
-  border-top:1px solid rgba(255,255,255,.14);
-  border-bottom:1px solid rgba(0,0,0,.45);
+  left:-7px;
+  right:-7px;
+  top:8px;
+  bottom:8px;
+  border-top:1px solid rgba(255,255,255,.10);
+  border-bottom:1px solid rgba(255,255,255,.03);
   border-radius:50%;
-  transform:rotate(-17deg);
+  transform:rotate(-16deg) scaleY(.48);
+  opacity:.0;
+  pointer-events:none;
 }
-.planet-a{background:radial-gradient(circle at 30% 28%,#f2f2f2 0 14%,#bdbdbd 15% 30%,#4d4d4d 60%,#111 100%) !important}
-.planet-b{background:radial-gradient(circle at 30% 25%,#ddd 0 12%,#878787 13% 35%,#3f3f3f 58%,#0f0f0f 100%) !important}
-.planet-c{background:radial-gradient(circle at 35% 30%,#f1f1f1 0 10%,#9b9b9b 11% 28%,#5e5e5e 50%,#121212 100%) !important}
-.planet-d{background:radial-gradient(circle at 55% 32%,#ededed 0 11%,#777 12% 36%,#383838 58%,#0c0c0c 100%) !important}
-.planet-e{background:radial-gradient(circle at 27% 33%,#f5f5f5 0 13%,#a6a6a6 14% 31%,#4a4a4a 55%,#111 100%) !important}
+/* Distinct monochrome planet surfaces. */
+.planet-a{
+  background:
+    radial-gradient(circle at 29% 23%,#ffffff 0 5%,rgba(255,255,255,.45) 6% 10%,transparent 16%),
+    radial-gradient(circle at 67% 66%,rgba(0,0,0,.45) 0 8%,transparent 9%),
+    radial-gradient(circle at 38% 59%,rgba(0,0,0,.28) 0 5%,transparent 6%),
+    radial-gradient(circle at 35% 40%,#c8c8c8 0 18%,#777 47%,#303030 72%,#090909 100%) !important;
+}
+.planet-b{
+  background:
+    radial-gradient(circle at 28% 23%,#f5f5f5 0 4%,rgba(255,255,255,.35) 5% 11%,transparent 16%),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 3px,rgba(35,35,35,.18) 3px 6px,transparent 6px 9px),
+    radial-gradient(circle at 34% 44%,#adadad 0 22%,#656565 49%,#292929 72%,#090909 100%) !important;
+}
+.planet-c:after{
+  opacity:.9;
+  border-top:2px solid rgba(255,255,255,.28);
+  border-bottom:1px solid rgba(0,0,0,.5);
+  box-shadow:0 0 4px rgba(255,255,255,.08);
+}
+.planet-c{
+  background:
+    radial-gradient(circle at 30% 23%,#ffffff 0 4%,rgba(255,255,255,.42) 5% 10%,transparent 16%),
+    radial-gradient(circle at 62% 61%,rgba(0,0,0,.34) 0 7%,transparent 8%),
+    radial-gradient(circle at 34% 40%,#d2d2d2 0 18%,#828282 48%,#3b3b3b 73%,#0b0b0b 100%) !important;
+}
+.planet-d{
+  background:
+    radial-gradient(circle at 57% 20%,#ffffff 0 4%,rgba(255,255,255,.33) 5% 10%,transparent 16%),
+    radial-gradient(circle at 30% 63%,rgba(0,0,0,.30) 0 8%,transparent 9%),
+    radial-gradient(circle at 41% 44%,#c2c2c2 0 18%,#6d6d6d 46%,#2b2b2b 72%,#080808 100%) !important;
+}
+.planet-e{
+  background:
+    radial-gradient(circle at 27% 23%,#ffffff 0 5%,rgba(255,255,255,.42) 6% 11%,transparent 17%),
+    radial-gradient(circle at 63% 61%,rgba(0,0,0,.42) 0 7%,transparent 8%),
+    radial-gradient(circle at 42% 44%,#c4c4c4 0 18%,#777 46%,#343434 72%,#0a0a0a 100%) !important;
+}
 .planet-label{
   margin-top:8px;
   width:max-content;
@@ -364,7 +424,7 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
 }
 .planet-item:hover .planet,
 .planet-item.active .planet{
-  transform:scale(1.18);
+  transform:scale(1.14) translateY(-1px);
   border-color:#d3d3d3;
   box-shadow:0 0 16px rgba(255,255,255,.1),0 7px 18px rgba(0,0,0,.6);
 }
@@ -598,9 +658,18 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   transform-origin:0 0;
   animation:labelOrbitC 13s linear infinite;
 }
-/* All planets stay suspended from their own thread; labels orbit separately. */
-.planet-item:nth-child(3) .thread{
-  display:block !important;
+.planet-item:nth-child(3)::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:30px;
+  width:1px;
+  height:11px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.78),rgba(255,255,255,.18));
+  box-shadow:0 0 4px rgba(255,255,255,.08);
+  transform:translateX(-50%);
+  transform-origin:top center;
+  z-index:1;
 }
 
 .planet-item:hover .planet-label,
@@ -615,10 +684,12 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   .planet-item:nth-child(4) .planet-label{animation-name:labelOrbitD}
   .planet-item:nth-child(5) .planet-label{animation-name:labelOrbitE}
   .planet-item:nth-child(3) .planet-label{top:43px;max-width:118px;animation-name:labelOrbitC}
+  .planet-item:nth-child(3)::after{top:30px;height:11px}
 }
 @media(max-width:600px){
   .planet-item .planet-label{top:36px;font-size:6.2px}
   .planet-item:nth-child(3) .planet-label{top:40px;max-width:90px;animation-name:labelOrbitC}
+  .planet-item:nth-child(3)::after{top:27px;height:9px}
 }
 @media(prefers-reduced-motion:reduce){
   .planet-item:nth-child(1) .planet-label,
