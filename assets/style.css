@@ -944,3 +944,17 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   45%{opacity:.9;transform:translate(-50%,-50%) scale(1.55)}
   100%{opacity:0;transform:translate(-50%,-50%) scale(3.2)}
 }
+
+/* Slower orbital rocket motion is driven by JavaScript frame updates. */
+.rocket-flight .rocket{
+  animation:none !important;
+  will-change:transform;
+}
+.rocket-flight .rocket-flame{
+  animation:rocketFlameSlow .46s ease-in-out infinite !important;
+  will-change:transform,opacity;
+}
+@keyframes rocketFlameSlow{
+  0%,100%{opacity:.36;transform:translateX(-50%) rotate(-18deg) scale(.68)}
+  50%{opacity:.95;transform:translateX(-50%) rotate(-18deg) scale(1.02)}
+}

@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 
-// Robust Explore Projects rocket launch: animate in the viewport, hit the Projects planet, then navigate.
+// Explore Projects rocket launch: transfer to orbit, revolve around the Projects planet, then crash.
 (() => {
   const button = document.querySelector('.rocket-launch-btn');
   const projectsPlanet = document.querySelector('.planet-item[href="projects.html"] .planet');
@@ -128,25 +128,28 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
     if (button.classList.contains('is-launching')) return;
 
-    // Reduced motion: go directly to the requested page.
     if (prefersReduced) {
       window.location.href = button.href;
       return;
     }
 
-    const b = button.getBoundingClientRect();
-    const p = projectsPlanet.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
+    const planetRect = projectsPlanet.getBoundingClientRect();
 
-    const start = {
-      x: b.left + b.width * 0.78,
-      y: b.top + b.height * 0.50
-    };
-    const end = {
-      x: p.left + p.width * 0.50,
-      y: p.top + p.height * 0.50
-    };
+    const startX = buttonRect.left + buttonRect.width * 0.80;
+    const startY = buttonRect.top + buttonRect.height * 0.50;
 
-    // Create the flight layer fresh for every launch.
+    const centerX = planetRect.left + planetRect.width * 0.50;
+    const centerY = planetRect.top + planetRect.height * 0.50;
+
+    // Orbit is intentionally larger than the planet so the rocket visibly travels around it.
+    const orbitRadius = Math.max(58, Math.min(92, window.innerWidth * 0.055));
+
+    // Begin at the point on the orbit that is closest to the button.
+    const startAngle = Math.atan2(startY - centerY, startX - centerX);
+    const transferX = centerX + Math.cos(startAngle) * orbitRadius;
+    const transferY = centerY + Math.sin(startAngle) * orbitRadius;
+
     const flight = document.createElement('div');
     flight.className = 'rocket-flight launching';
     flight.setAttribute('aria-hidden', 'true');
@@ -160,76 +163,132 @@ document.addEventListener('DOMContentLoaded', () => {
 
     flight.append(rocket, flame);
     document.body.appendChild(flight);
-
     button.classList.add('is-launching');
 
-    const duration = 1550;
-    const startTime = performance.now();
-
-    const trailTimer = setInterval(() => {
-      const r = rocket.getBoundingClientRect();
+    const trails = new Set();
+    const addTrail = (x, y, angle) => {
       const trail = document.createElement('div');
       trail.className = 'rocket-trail';
-      trail.style.left = `${r.left + r.width * 0.18}px`;
-      trail.style.top = `${r.top + r.height * 0.74}px`;
-      trail.style.opacity = `${0.55 + Math.random() * 0.25}`;
+      trail.style.left = `${x}px`;
+      trail.style.top = `${y}px`;
+      trail.style.transform = `translate(-50%,-50%) rotate(${angle + 180}deg)`;
+      trail.style.opacity = '0.55';
       document.body.appendChild(trail);
+      trails.add(trail);
+
       trail.animate(
         [
-          { transform: 'translate(-50%,-15%) scale(1)', opacity: .65 },
-          { transform: 'translate(-50%,14px) scale(.25)', opacity: 0 }
+          { opacity: .55, transform: `translate(-50%,-50%) rotate(${angle + 180}deg) scale(1)` },
+          { opacity: 0, transform: `translate(-50%,-50%) rotate(${angle + 180}deg) scale(.15) translateY(12px)` }
         ],
-        { duration: 260, easing: 'ease-out', fill: 'forwards' }
-      ).finished.finally(() => trail.remove());
-    }, 90);
-
-    const animate = (now) => {
-      const progress = Math.min(1, (now - startTime) / duration);
-      const eased = 1 - Math.pow(1 - progress, 3);
-
-      // A gentle arc upward before descending into the Projects planet.
-      const x = start.x + (end.x - start.x) * eased;
-      const arc = Math.sin(Math.PI * progress) * Math.max(55, Math.abs(end.y - start.y) * 0.30);
-      const y = start.y + (end.y - start.y) * eased - arc;
-
-      const dx = end.x - start.x;
-      const dy = (end.y - start.y) - Math.cos(Math.PI * progress) * Math.max(55, Math.abs(end.y - start.y) * 0.30);
-      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-
-      rocket.style.transform = `translate3d(${x - 12}px,${y - 12}px,0) rotate(${angle}deg)`;
-      flame.style.transform = `translate3d(${x - 1}px,${y + 10}px,0) rotate(${angle}deg)`;
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        clearInterval(trailTimer);
-
-        // Crash/impact exactly on the Projects planet.
-        const impact = document.createElement('div');
-        impact.className = 'planet-impact';
-        impact.style.left = `${end.x}px`;
-        impact.style.top = `${end.y}px`;
-        document.body.appendChild(impact);
-
-        // Briefly emphasize the target planet before navigation.
-        projectsPlanet.animate(
-          [
-            { transform: 'scale(1)' },
-            { transform: 'scale(1.35)' },
-            { transform: 'scale(1)' }
-          ],
-          { duration: 420, easing: 'ease-out' }
-        );
-
-        setTimeout(() => {
-          flight.remove();
-          impact.remove();
-          button.classList.remove('is-launching');
-          window.location.href = button.href;
-        }, 520);
-      }
+        { duration: 520, easing: 'ease-out', fill: 'forwards' }
+      ).finished.finally(() => {
+        trails.delete(trail);
+        trail.remove();
+      });
     };
 
-    requestAnimationFrame(animate);
+    const cleanupTrails = () => {
+      trails.forEach(t => t.remove());
+      trails.clear();
+    };
+
+    // Phase 1: slow transfer to the orbit.
+    const transferDuration = 1400;
+    const orbitDuration = 3100;
+    const crashDuration = 1200;
+    const startedAt = performance.now();
+
+    const render = (now) => {
+      const elapsed = now - startedAt;
+
+      let x, y, angle;
+
+      if (elapsed <= transferDuration) {
+        const p = elapsed / transferDuration;
+        const eased = 1 - Math.pow(1 - p, 3);
+
+        // Gentle arc into the orbit rather than a straight line.
+        const arcLift = Math.sin(Math.PI * eased) * 42;
+        x = startX + (transferX - startX) * eased;
+        y = startY + (transferY - startY) * eased - arcLift;
+
+        angle = Math.atan2((transferY - startY) - Math.cos(Math.PI * eased) * 42, transferX - startX) * 180 / Math.PI;
+      } else if (elapsed <= transferDuration + orbitDuration) {
+        // Phase 2: realistic orbital travel around the planet.
+        const orbitP = (elapsed - transferDuration) / orbitDuration;
+        const turns = 1.35;
+        const theta = startAngle + orbitP * Math.PI * 2 * turns;
+
+        x = centerX + Math.cos(theta) * orbitRadius;
+        y = centerY + Math.sin(theta) * orbitRadius;
+
+        // Tangential direction: velocity is perpendicular to radius.
+        angle = (theta + Math.PI / 2) * 180 / Math.PI;
+      } else {
+        // Phase 3: spiral inward and collide with the planet.
+        const crashP = Math.min(1, (elapsed - transferDuration - orbitDuration) / crashDuration);
+        const crashEase = crashP * crashP * (3 - 2 * crashP);
+        const theta = startAngle + Math.PI * 2 * turnsValue(1.35) + crashP * Math.PI * 1.15;
+        const radius = orbitRadius * (1 - crashEase);
+
+        x = centerX + Math.cos(theta) * radius;
+        y = centerY + Math.sin(theta) * radius;
+
+        angle = (theta + Math.PI / 2 + crashP * 22) * 180 / Math.PI;
+
+        if (crashP >= 1) {
+          x = centerX;
+          y = centerY;
+        }
+      }
+
+      rocket.style.transform = `translate3d(${x - 12}px,${y - 12}px,0) rotate(${angle}deg)`;
+      flame.style.transform = `translate3d(${x - 2}px,${y + 9}px,0) rotate(${angle}deg)`;
+
+      if (elapsed > transferDuration + 180 && elapsed < transferDuration + orbitDuration + crashDuration - 100) {
+        if (Math.floor(elapsed / 90) !== Math.floor((elapsed - 16) / 90)) {
+          addTrail(x - 3, y + 3, angle);
+        }
+      }
+
+      if (elapsed < transferDuration + orbitDuration + crashDuration) {
+        requestAnimationFrame(render);
+        return;
+      }
+
+      cleanupTrails();
+
+      // Impact flash + subtle planet response at the exact collision point.
+      const impact = document.createElement('div');
+      impact.className = 'planet-impact';
+      impact.style.left = `${centerX}px`;
+      impact.style.top = `${centerY}px`;
+      document.body.appendChild(impact);
+
+      projectsPlanet.animate(
+        [
+          { transform: 'scale(1)' },
+          { transform: 'scale(1.16)' },
+          { transform: 'scale(.98)' },
+          { transform: 'scale(1)' }
+        ],
+        { duration: 650, easing: 'ease-out' }
+      );
+
+      setTimeout(() => {
+        flight.remove();
+        impact.remove();
+        button.classList.remove('is-launching');
+        window.location.href = button.href;
+      }, 800);
+    };
+
+    requestAnimationFrame(render);
   });
+
+  function turnsValue(value) {
+    return value;
+  }
 })();
+
