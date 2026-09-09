@@ -115,56 +115,121 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
-// Explore Projects rocket launch.
+
+// Robust Explore Projects rocket launch: animate in the viewport, hit the Projects planet, then navigate.
 (() => {
   const button = document.querySelector('.rocket-launch-btn');
-  const flight = document.createElement('div');
-  if (!button) return;
-
-  flight.className = 'rocket-flight';
-  flight.setAttribute('aria-hidden', 'true');
-  flight.innerHTML = '<span class="rocket">🚀</span><span class="rocket-flame"></span>';
-  document.body.appendChild(flight);
-
   const projectsPlanet = document.querySelector('.planet-item[href="projects.html"] .planet');
-  if (!projectsPlanet) return;
+  if (!button || !projectsPlanet) return;
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   button.addEventListener('click', (event) => {
     event.preventDefault();
     if (button.classList.contains('is-launching')) return;
 
+    // Reduced motion: go directly to the requested page.
+    if (prefersReduced) {
+      window.location.href = button.href;
+      return;
+    }
+
     const b = button.getBoundingClientRect();
     const p = projectsPlanet.getBoundingClientRect();
 
-    const sx = b.left + b.width * 0.80;
-    const sy = b.top + b.height * 0.50;
-    const tx = p.left + p.width * 0.50;
-    const ty = p.top + p.height * 0.50;
-    const mx = sx + (tx - sx) * 0.43;
-    const my = sy - Math.max(55, Math.abs(ty - sy) * 0.22);
+    const start = {
+      x: b.left + b.width * 0.78,
+      y: b.top + b.height * 0.50
+    };
+    const end = {
+      x: p.left + p.width * 0.50,
+      y: p.top + p.height * 0.50
+    };
 
-    flight.style.setProperty('--sx', `${sx}px`);
-    flight.style.setProperty('--sy', `${sy}px`);
-    flight.style.setProperty('--mx', `${mx}px`);
-    flight.style.setProperty('--my', `${my}px`);
-    flight.style.setProperty('--tx', `${tx}px`);
-    flight.style.setProperty('--ty', `${ty}px`);
+    // Create the flight layer fresh for every launch.
+    const flight = document.createElement('div');
+    flight.className = 'rocket-flight launching';
+    flight.setAttribute('aria-hidden', 'true');
+
+    const rocket = document.createElement('div');
+    rocket.className = 'rocket';
+    rocket.textContent = '🚀';
+
+    const flame = document.createElement('div');
+    flame.className = 'rocket-flame';
+
+    flight.append(rocket, flame);
+    document.body.appendChild(flight);
 
     button.classList.add('is-launching');
-    flight.classList.remove('launching');
-    void flight.offsetWidth;
-    flight.classList.add('launching');
 
-    setTimeout(() => {
-      const impact = document.createElement('div');
-      impact.className = 'planet-impact';
-      impact.style.left = `${tx}px`;
-      impact.style.top = `${ty}px`;
-      document.body.appendChild(impact);
-      requestAnimationFrame(() => impact.classList.add('show'));
+    const duration = 1550;
+    const startTime = performance.now();
 
-      setTimeout(() => impact.remove(), 450);
-      window.location.href = button.href;
-    }, 1500);
+    const trailTimer = setInterval(() => {
+      const r = rocket.getBoundingClientRect();
+      const trail = document.createElement('div');
+      trail.className = 'rocket-trail';
+      trail.style.left = `${r.left + r.width * 0.18}px`;
+      trail.style.top = `${r.top + r.height * 0.74}px`;
+      trail.style.opacity = `${0.55 + Math.random() * 0.25}`;
+      document.body.appendChild(trail);
+      trail.animate(
+        [
+          { transform: 'translate(-50%,-15%) scale(1)', opacity: .65 },
+          { transform: 'translate(-50%,14px) scale(.25)', opacity: 0 }
+        ],
+        { duration: 260, easing: 'ease-out', fill: 'forwards' }
+      ).finished.finally(() => trail.remove());
+    }, 90);
+
+    const animate = (now) => {
+      const progress = Math.min(1, (now - startTime) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      // A gentle arc upward before descending into the Projects planet.
+      const x = start.x + (end.x - start.x) * eased;
+      const arc = Math.sin(Math.PI * progress) * Math.max(55, Math.abs(end.y - start.y) * 0.30);
+      const y = start.y + (end.y - start.y) * eased - arc;
+
+      const dx = end.x - start.x;
+      const dy = (end.y - start.y) - Math.cos(Math.PI * progress) * Math.max(55, Math.abs(end.y - start.y) * 0.30);
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+
+      rocket.style.transform = `translate3d(${x - 12}px,${y - 12}px,0) rotate(${angle}deg)`;
+      flame.style.transform = `translate3d(${x - 1}px,${y + 10}px,0) rotate(${angle}deg)`;
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        clearInterval(trailTimer);
+
+        // Crash/impact exactly on the Projects planet.
+        const impact = document.createElement('div');
+        impact.className = 'planet-impact';
+        impact.style.left = `${end.x}px`;
+        impact.style.top = `${end.y}px`;
+        document.body.appendChild(impact);
+
+        // Briefly emphasize the target planet before navigation.
+        projectsPlanet.animate(
+          [
+            { transform: 'scale(1)' },
+            { transform: 'scale(1.35)' },
+            { transform: 'scale(1)' }
+          ],
+          { duration: 420, easing: 'ease-out' }
+        );
+
+        setTimeout(() => {
+          flight.remove();
+          impact.remove();
+          button.classList.remove('is-launching');
+          window.location.href = button.href;
+        }, 520);
+      }
+    };
+
+    requestAnimationFrame(animate);
   });
 })();
