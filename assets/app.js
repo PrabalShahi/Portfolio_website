@@ -114,3 +114,57 @@ document.addEventListener('DOMContentLoaded', () => {
     logo.style.setProperty('--star-scale', '1');
   });
 })();
+
+// Explore Projects rocket launch.
+(() => {
+  const button = document.querySelector('.rocket-launch-btn');
+  const flight = document.createElement('div');
+  if (!button) return;
+
+  flight.className = 'rocket-flight';
+  flight.setAttribute('aria-hidden', 'true');
+  flight.innerHTML = '<span class="rocket">🚀</span><span class="rocket-flame"></span>';
+  document.body.appendChild(flight);
+
+  const projectsPlanet = document.querySelector('.planet-item[href="projects.html"] .planet');
+  if (!projectsPlanet) return;
+
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (button.classList.contains('is-launching')) return;
+
+    const b = button.getBoundingClientRect();
+    const p = projectsPlanet.getBoundingClientRect();
+
+    const sx = b.left + b.width * 0.80;
+    const sy = b.top + b.height * 0.50;
+    const tx = p.left + p.width * 0.50;
+    const ty = p.top + p.height * 0.50;
+    const mx = sx + (tx - sx) * 0.43;
+    const my = sy - Math.max(55, Math.abs(ty - sy) * 0.22);
+
+    flight.style.setProperty('--sx', `${sx}px`);
+    flight.style.setProperty('--sy', `${sy}px`);
+    flight.style.setProperty('--mx', `${mx}px`);
+    flight.style.setProperty('--my', `${my}px`);
+    flight.style.setProperty('--tx', `${tx}px`);
+    flight.style.setProperty('--ty', `${ty}px`);
+
+    button.classList.add('is-launching');
+    flight.classList.remove('launching');
+    void flight.offsetWidth;
+    flight.classList.add('launching');
+
+    setTimeout(() => {
+      const impact = document.createElement('div');
+      impact.className = 'planet-impact';
+      impact.style.left = `${tx}px`;
+      impact.style.top = `${ty}px`;
+      document.body.appendChild(impact);
+      requestAnimationFrame(() => impact.classList.add('show'));
+
+      setTimeout(() => impact.remove(), 450);
+      window.location.href = button.href;
+    }, 1500);
+  });
+})();

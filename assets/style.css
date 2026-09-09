@@ -851,3 +851,77 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   .planet-item .planet-a,.planet-item .planet-c,.planet-item .planet-d{width:26px;height:26px}
   .planet-item .planet-b,.planet-item .planet-e{width:24px;height:24px}
 }
+
+/* Rocket launch: compact icon only; button dimensions remain unchanged. */
+.rocket-launch-btn{position:relative;overflow:hidden}
+.rocket-launch-btn .rocket-icon{
+  display:inline-block;
+  font-size:12px;
+  line-height:1;
+  filter:grayscale(1);
+  transform:rotate(-18deg);
+  transform-origin:50% 50%;
+  transition:transform .18s ease, opacity .18s ease;
+}
+.rocket-launch-btn:hover .rocket-icon{transform:rotate(-18deg) translateY(-1px) scale(1.06)}
+.rocket-launch-btn.is-launching .rocket-icon{opacity:0}
+
+.rocket-flight{
+  position:fixed;
+  left:0;top:0;
+  width:0;height:0;
+  z-index:200;
+  pointer-events:none;
+  opacity:0;
+}
+.rocket-flight.launching{opacity:1}
+.rocket-flight .rocket{
+  position:absolute;
+  left:0;top:0;
+  font-size:18px;
+  line-height:1;
+  filter:grayscale(1) drop-shadow(0 0 7px rgba(255,255,255,.35));
+  transform-origin:center;
+  animation:rocketTravel 1.5s cubic-bezier(.18,.72,.18,1) forwards;
+}
+.rocket-flight .rocket-flame{
+  position:absolute;
+  left:0;top:11px;
+  width:4px;height:12px;
+  transform:translateX(-50%) rotate(-18deg);
+  border-radius:50%;
+  background:linear-gradient(to bottom,rgba(255,255,255,.95),rgba(255,255,255,0));
+  filter:blur(1px);
+  animation:rocketFlame .28s ease-in-out infinite;
+}
+@keyframes rocketTravel{
+  0%{transform:translate(var(--sx),var(--sy)) rotate(-18deg) scale(.82);opacity:1}
+  34%{transform:translate(var(--mx),var(--my)) rotate(-12deg) scale(1);opacity:1}
+  72%{transform:translate(var(--tx),var(--ty)) rotate(8deg) scale(.94);opacity:1}
+  88%{transform:translate(calc(var(--tx) + 2px),calc(var(--ty) + 7px)) rotate(44deg) scale(.62);opacity:.95}
+  100%{transform:translate(calc(var(--tx) + 6px),calc(var(--ty) + 16px)) rotate(72deg) scale(.25);opacity:0}
+}
+@keyframes rocketFlame{
+  0%,100%{opacity:.35;transform:translateX(-50%) rotate(-18deg) scale(.7)}
+  50%{opacity:1;transform:translateX(-50%) rotate(-18deg) scale(1.08)}
+}
+.planet-impact{
+  position:fixed;
+  width:12px;height:12px;
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:199;
+  transform:translate(-50%,-50%) scale(.4);
+  opacity:0;
+  box-shadow:0 0 12px rgba(255,255,255,.24), inset 0 0 7px rgba(255,255,255,.18);
+}
+.planet-impact.show{animation:planetImpact .42s ease-out forwards}
+@keyframes planetImpact{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}
+  25%{opacity:1;transform:translate(-50%,-50%) scale(1.35)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(2.5)}
+}
+@media(prefers-reduced-motion:reduce){
+  .rocket-launch-btn .rocket-icon{transition:none}
+}
