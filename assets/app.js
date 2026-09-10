@@ -329,10 +329,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, 1150);
 
-    // Only use same-tab fallback if the browser blocks opening a new tab.
-    if (!destination) {
-      window.location.href = githubUrl;
-    }
   };
 
   hole.addEventListener('click', openGitHub);
@@ -352,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const getSavedTheme = () => {
     try {
-      return localStorage.getItem(storageKey) === 'light';
+      return sessionStorage.getItem(storageKey) === 'light';
     } catch (_) {
       return false;
     }
@@ -366,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (persist) {
       try {
-        localStorage.setItem(storageKey, enabled ? 'light' : 'dark');
+        sessionStorage.setItem(storageKey, enabled ? 'light' : 'dark');
       } catch (_) {}
     }
   };

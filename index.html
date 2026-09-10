@@ -14,7 +14,16 @@
 <script>
 (function(){
   try {
-    if (localStorage.getItem('prabal-theme') === 'light') {
+    const ref = document.referrer;
+    const nav = performance.getEntriesByType('navigation')[0];
+    const isReload = nav && nav.type === 'reload';
+    const sameOrigin = ref && new URL(ref, window.location.href).origin === window.location.origin;
+    // A new/external entry into the portfolio always starts dark.
+    // Internal page-to-page navigation preserves the selected theme.
+    if (!sameOrigin && !isReload) {
+      sessionStorage.removeItem('prabal-theme');
+    }
+    if (sessionStorage.getItem('prabal-theme') === 'light') {
       document.body.classList.add('light-mode');
     }
   } catch (e) {}
