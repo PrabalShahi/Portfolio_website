@@ -1680,3 +1680,133 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
     animation:none !important;
   }
 }
+
+/* Final owl silhouette refinement — no legs/talons/twig; seated directly on the panel. */
+.profile-owl{
+  right:30px;
+  top:-64px;
+  width:92px;
+  height:75px;
+  transform:none;
+  transform-origin:50% 100%;
+  filter:drop-shadow(0 8px 10px rgba(0,0,0,.56))
+         drop-shadow(0 0 8px rgba(170,170,170,.09));
+}
+.owl-body{
+  transform-origin:70px 78px;
+}
+.owl-head{
+  transform-origin:70px 51px;
+}
+.feather-left,.feather-right{
+  transform-origin:70px 76px;
+}
+.owl-svg{
+  overflow:visible;
+}
+
+/* Hide all possible foot/perch elements from prior versions. */
+.owl-legs,
+.owl-twig,
+.owl-twig-small,
+.owl-talon,
+.owl-leg-left,
+.owl-leg-right{
+  display:none !important;
+}
+
+/* Give the owl a grounded lower silhouette, as if its body is resting on the panel edge. */
+.profile-owl::after{
+  content:"";
+  position:absolute;
+  left:17%;
+  right:17%;
+  bottom:1px;
+  height:4px;
+  border-radius:50%;
+  background:rgba(55,55,55,.22);
+  filter:blur(2px);
+  z-index:-1;
+}
+
+/* More expressive owl motion. */
+.profile-owl{
+  animation:owl-settled-breath 3.7s ease-in-out infinite;
+}
+.owl-head{
+  animation:owl-head-curious-refined 5.3s ease-in-out infinite;
+}
+.owl-eye{
+  animation:owl-blink-refined 5.8s ease-in-out infinite;
+}
+.owl-eye-right{animation-delay:.10s}
+.owl-pupil{
+  animation:owl-look-refined 6.5s ease-in-out infinite;
+}
+.ear-left,.ear-right{
+  animation:owl-ear-refined 4.15s ease-in-out infinite;
+}
+.ear-right{animation-delay:.16s}
+.feather{
+  animation:owl-wing-refined 3.25s ease-in-out infinite;
+}
+.feather-right{animation-delay:.15s}
+.chest-feather{
+  animation:owl-chest-refined 3.1s ease-in-out infinite;
+}
+
+@keyframes owl-settled-breath{
+  0%,100%{transform:translateY(1px) scale(1)}
+  42%{transform:translateY(-1px) scale(1.012)}
+  58%{transform:translateY(0) scale(1.006)}
+}
+@keyframes owl-head-curious-refined{
+  0%,100%{transform:rotate(0deg)}
+  15%{transform:rotate(-2.8deg)}
+  29%{transform:rotate(-1deg)}
+  49%{transform:rotate(2.4deg)}
+  63%{transform:rotate(1deg)}
+  79%{transform:rotate(-1.2deg)}
+}
+@keyframes owl-blink-refined{
+  0%,37%,40%,69%,72%,100%{transform:scaleY(1)}
+  38%,39%,70%,71%{transform:scaleY(.06)}
+}
+@keyframes owl-look-refined{
+  0%,25%,100%{transform:translateX(0)}
+  34%{transform:translateX(1.4px)}
+  43%{transform:translateX(1.4px)}
+  52%{transform:translateX(-1.45px)}
+  61%{transform:translateX(-1.45px)}
+  69%{transform:translateX(.25px)}
+}
+@keyframes owl-ear-refined{
+  0%,74%,100%{transform:rotate(0)}
+  78%{transform:rotate(-3deg)}
+  82%{transform:rotate(1.4deg)}
+  86%{transform:rotate(0)}
+}
+@keyframes owl-wing-refined{
+  0%,100%{transform:translateY(0) rotate(0)}
+  46%{transform:translateY(1px) rotate(-1.3deg)}
+  53%{transform:translateY(0) rotate(1.15deg)}
+}
+@keyframes owl-chest-refined{
+  0%,100%{transform:scaleY(1)}
+  48%{transform:scaleY(1.05)}
+  56%{transform:scaleY(1.01)}
+}
+
+@media(max-width:780px){
+  .profile-owl{
+    right:21px;
+    top:-54px;
+    width:78px;
+    height:64px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .profile-owl,.owl-head,.owl-eye,.owl-pupil,.ear-left,.ear-right,.feather,.chest-feather{
+    animation:none !important;
+  }
+}
