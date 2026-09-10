@@ -295,8 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-// Single GitHub wormhole transition.
+// Home-page wormhole: one GitHub tab only, no navigation in the portfolio tab.
 (() => {
   if (!document.body.classList.contains('home-page')) return;
 
@@ -310,24 +309,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (busy) return;
     busy = true;
 
-    // Exactly one new tab, opened directly by the user gesture.
-    const githubTab = window.open(githubUrl, '_blank', 'noopener,noreferrer');
+    // Open exactly one GitHub tab directly from the user's click.
+    // The portfolio tab stays on the Home page throughout the visual transition.
+    const destination = window.open(githubUrl, '_blank', 'noopener,noreferrer');
 
-    // Play the local wormhole transition without changing the portfolio tab.
     hole.classList.add('wormhole-github-pulse');
 
     const flare = document.createElement('span');
     flare.className = 'wormhole-github-flare';
     hole.appendChild(flare);
 
+    // Brief visual collapse into the wormhole, then leave the home page untouched.
     setTimeout(() => {
       flare.remove();
       hole.classList.remove('wormhole-github-pulse');
       busy = false;
-      try {
-        if (githubTab && !githubTab.closed) githubTab.focus();
-      } catch (_) {}
+      if (destination && !destination.closed) {
+        try { destination.focus(); } catch (_) {}
+      }
     }, 1150);
+
+    // Only use same-tab fallback if the browser blocks opening a new tab.
+    if (!destination) {
+      window.location.href = githubUrl;
+    }
   };
 
   hole.addEventListener('click', openGitHub);
