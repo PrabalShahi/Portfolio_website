@@ -292,3 +292,84 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
+
+
+// Home-page GitHub / LinkedIn wormhole transition.
+(() => {
+  if (!document.body.classList.contains('home-page')) return;
+
+  const cluster = document.querySelector('.home-social-cluster');
+  const hole = document.querySelector('.social-wormhole');
+  if (!cluster || !hole) return;
+
+  const links = [...cluster.querySelectorAll('.socials a')];
+
+  links.forEach((link) => {
+    link.addEventListener('click', (event) => {
+      if (cluster.dataset.wormholeBusy === '1') return;
+      event.preventDefault();
+      cluster.dataset.wormholeBusy = '1';
+
+      const b = link.getBoundingClientRect();
+      const h = hole.getBoundingClientRect();
+
+      const sx = b.left + b.width / 2;
+      const sy = b.top + b.height / 2;
+      const hx = h.left + h.width / 2;
+      const hy = h.top + h.height / 2;
+
+      const clone = link.cloneNode(true);
+      clone.className = 'wormhole-button-clone';
+      clone.textContent = link.textContent;
+      clone.style.left = `${b.left}px`;
+      clone.style.top = `${b.top}px`;
+      clone.style.width = `${b.width}px`;
+      clone.style.height = `${b.height}px`;
+
+      const dx = hx - sx;
+      const dy = hy - sy;
+
+      clone.style.setProperty('--wx1', `${dx * .34}px`);
+      clone.style.setProperty('--wy1', `${dy * .25 - 7}px`);
+      clone.style.setProperty('--wx2', `${dx * .70}px`);
+      clone.style.setProperty('--wy2', `${dy * .62}px`);
+      clone.style.setProperty('--wx3', `${dx * .88}px`);
+      clone.style.setProperty('--wy3', `${dy * .88}px`);
+      clone.style.setProperty('--wx4', `${dx}px`);
+      clone.style.setProperty('--wy4', `${dy}px`);
+      clone.style.setProperty('--wrot', link === links[0] ? '-8deg' : '8deg');
+
+      document.body.appendChild(clone);
+
+      // The real control disappears only while its animated copy travels.
+      link.style.visibility = 'hidden';
+      hole.classList.add('wormhole-pulse');
+
+      // Small particles follow the same path into the wormhole.
+      for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('span');
+        particle.className = 'wormhole-particle fly';
+        particle.style.left = `${sx}px`;
+        particle.style.top = `${sy}px`;
+        particle.style.setProperty('--pdx', `${dx * (.42 + Math.random() * .52)}px`);
+        particle.style.setProperty('--pdy', `${dy * (.42 + Math.random() * .52)}px`);
+        particle.style.animationDelay = `${i * 28}ms`;
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1100);
+      }
+
+      clone.addEventListener('animationend', () => {
+        setTimeout(() => {
+          window.open(link.href, link.target || '_self');
+        }, 60);
+      }, { once: true });
+
+      setTimeout(() => {
+        clone.remove();
+        link.style.visibility = '';
+        hole.classList.remove('wormhole-pulse');
+        cluster.dataset.wormholeBusy = '0';
+      }, 1710);
+    });
+  });
+})();

@@ -958,3 +958,172 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   0%,100%{opacity:.36;transform:translateX(-50%) rotate(-18deg) scale(.68)}
   50%{opacity:.95;transform:translateX(-50%) rotate(-18deg) scale(1.02)}
 }
+
+
+/* Home page: compact horizontal rotating wormhole under GH / LinkedIn */
+.home-social-cluster{
+  align-self:start;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  min-width:76px;
+  transform:translateY(-4px);
+}
+.home-social-cluster .socials{
+  margin:0;
+  display:flex;
+  gap:6px;
+}
+.home-social-cluster .socials a{
+  position:relative;
+  z-index:4;
+}
+
+/* layered elliptical lensing effect */
+.social-wormhole{
+  position:relative;
+  width:72px;
+  height:32px;
+  overflow:visible;
+  perspective:300px;
+  transform-style:preserve-3d;
+  filter:grayscale(1);
+}
+.wormhole-glow{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:70px;
+  height:25px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:
+    radial-gradient(ellipse at center,
+      #000 0 16%,
+      rgba(255,255,255,.18) 18% 21%,
+      rgba(255,255,255,.07) 22% 32%,
+      rgba(255,255,255,.025) 33% 46%,
+      transparent 68%);
+  filter:blur(3px);
+  opacity:.95;
+}
+.wormhole-ring{
+  position:absolute;
+  left:50%;
+  top:50%;
+  border-radius:50%;
+  transform-origin:center;
+  transform-style:preserve-3d;
+  border:1px solid rgba(255,255,255,.46);
+  box-shadow:
+    0 0 7px rgba(255,255,255,.22),
+    inset 0 0 5px rgba(255,255,255,.07);
+}
+.wormhole-ring-outer{
+  width:68px;height:22px;
+  transform:translate(-50%,-50%) rotateX(63deg);
+  animation:wormholeOuter 4.4s linear infinite;
+}
+.wormhole-ring-mid{
+  width:53px;height:17px;
+  border-color:rgba(255,255,255,.62);
+  transform:translate(-50%,-50%) rotateX(67deg);
+  animation:wormholeMid 3.3s linear infinite reverse;
+}
+.wormhole-ring-inner{
+  width:38px;height:12px;
+  border-color:rgba(255,255,255,.78);
+  transform:translate(-50%,-50%) rotateX(71deg);
+  animation:wormholeInner 2.4s linear infinite;
+}
+.wormhole-core{
+  position:absolute;
+  left:50%;top:50%;
+  width:16px;height:8px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:#010101;
+  box-shadow:
+    0 0 9px rgba(255,255,255,.15),
+    0 0 18px rgba(255,255,255,.07);
+}
+@keyframes wormholeOuter{
+  to{transform:translate(-50%,-50%) rotateX(63deg) rotateZ(360deg)}
+}
+@keyframes wormholeMid{
+  to{transform:translate(-50%,-50%) rotateX(67deg) rotateZ(360deg)}
+}
+@keyframes wormholeInner{
+  to{transform:translate(-50%,-50%) rotateX(71deg) rotateZ(360deg)}
+}
+
+/* Warp clicked social button into the wormhole */
+.wormhole-button-clone{
+  position:fixed;
+  z-index:10000;
+  margin:0 !important;
+  pointer-events:none;
+  display:grid !important;
+  place-items:center;
+  border-color:#9b9b9b !important;
+  background:#111 !important;
+  color:#eee !important;
+  box-shadow:0 0 18px rgba(255,255,255,.12);
+  will-change:transform,opacity;
+}
+@keyframes wormholeWarp{
+  0%{
+    opacity:1;
+    transform:translate3d(0,0,0) scale(1) rotate(0);
+  }
+  30%{
+    opacity:1;
+    transform:translate3d(var(--wx1),var(--wy1),0) scale(1.03) rotate(var(--wrot));
+  }
+  62%{
+    opacity:.98;
+    transform:translate3d(var(--wx2),var(--wy2),0) scale(.72) rotate(calc(var(--wrot)*1.45));
+  }
+  84%{
+    opacity:.72;
+    transform:translate3d(var(--wx3),var(--wy3),0) scale(.25) rotate(calc(var(--wrot)*2));
+  }
+  100%{
+    opacity:0;
+    transform:translate3d(var(--wx4),var(--wy4),0) scale(.025) rotate(calc(var(--wrot)*2.8));
+  }
+}
+.wormhole-button-clone.warping{
+  animation:wormholeWarp 1.55s cubic-bezier(.2,.7,.14,1) forwards;
+}
+.social-wormhole.wormhole-pulse{
+  animation:wormholePulse .72s ease-out;
+}
+@keyframes wormholePulse{
+  0%{transform:scale(1);filter:grayscale(1)}
+  35%{transform:scale(1.17);filter:grayscale(1) brightness(1.4)}
+  100%{transform:scale(1);filter:grayscale(1)}
+}
+.wormhole-particle{
+  position:fixed;
+  width:3px;height:3px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 8px rgba(255,255,255,.85);
+  pointer-events:none;
+  z-index:10001;
+}
+.wormhole-particle.fly{
+  animation:wormholeParticle .9s cubic-bezier(.3,.7,.16,1) forwards;
+}
+@keyframes wormholeParticle{
+  from{opacity:.9;transform:translate(0,0) scale(1)}
+  to{opacity:0;transform:translate(var(--pdx),var(--pdy)) scale(.05)}
+}
+
+/* Only the home page moves the social pair upward a little; button dimensions do not change. */
+@media(max-width:780px){
+  .home-social-cluster{transform:translateY(-2px)}
+  .social-wormhole{transform:scale(.88);transform-origin:top center}
+}
