@@ -294,127 +294,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// Refined GH / LinkedIn wormhole transition on the home page.
-(() => {
-  if (!document.body.classList.contains('home-page')) return;
 
-  const cluster = document.querySelector('.home-social-cluster');
-  const hole = document.querySelector('.social-wormhole');
-  if (!cluster || !hole) return;
 
-  const links = [...cluster.querySelectorAll('.socials a')];
-
-  links.forEach((link) => {
-    link.addEventListener('click', (event) => {
-      if (cluster.dataset.wormholeBusy === '1') return;
-      event.preventDefault();
-      cluster.dataset.wormholeBusy = '1';
-
-      // Open the target tab immediately so browser popup blocking cannot prevent it.
-      // Keep it blank until the wormhole animation completes.
-      let destinationWindow = null;
-      if (link.target === '_blank') {
-        destinationWindow = window.open('about:blank', '_blank', 'noopener,noreferrer');
-        if (!destinationWindow) {
-          cluster.dataset.wormholeBusy = '0';
-          window.open(link.href, '_blank', 'noopener,noreferrer');
-          return;
-        }
-      }
-
-      const b = link.getBoundingClientRect();
-      const h = hole.getBoundingClientRect();
-
-      const sx = b.left + b.width * .5;
-      const sy = b.top + b.height * .5;
-      const hx = h.left + h.width * .5;
-      const hy = h.top + h.height * .5;
-      const dx = hx - sx;
-      const dy = hy - sy;
-
-      const clone = link.cloneNode(true);
-      clone.className = 'wormhole-button-clone';
-      clone.textContent = link.textContent;
-      clone.removeAttribute('href');
-      clone.removeAttribute('target');
-      clone.style.left = `${b.left}px`;
-      clone.style.top = `${b.top}px`;
-      clone.style.width = `${b.width}px`;
-      clone.style.height = `${b.height}px`;
-
-      const side = link === links[0] ? -1 : 1;
-      clone.style.setProperty('--wx1', `${dx * .18}px`);
-      clone.style.setProperty('--wy1', `${dy * .13 - 3}px`);
-      clone.style.setProperty('--wx2', `${dx * .38}px`);
-      clone.style.setProperty('--wy2', `${dy * .30 - 7}px`);
-      clone.style.setProperty('--wx3', `${dx * .57 + side * 4}px`);
-      clone.style.setProperty('--wy3', `${dy * .48 - 10}px`);
-      clone.style.setProperty('--wx4', `${dx * .72}px`);
-      clone.style.setProperty('--wy4', `${dy * .66 - 5}px`);
-      clone.style.setProperty('--wx5', `${dx * .87}px`);
-      clone.style.setProperty('--wy5', `${dy * .86}px`);
-      clone.style.setProperty('--wx6', `${dx}px`);
-      clone.style.setProperty('--wy6', `${dy}px`);
-      clone.style.setProperty('--r1', `${side * 4}deg`);
-      clone.style.setProperty('--r2', `${side * 11}deg`);
-      clone.style.setProperty('--r3', `${side * 19}deg`);
-      clone.style.setProperty('--r4', `${side * 29}deg`);
-      clone.style.setProperty('--r5', `${side * 45}deg`);
-      clone.style.setProperty('--r6', `${side * 72}deg`);
-
-      document.body.appendChild(clone);
-      link.style.visibility = 'hidden';
-      hole.classList.add('pulse');
-
-      // Matter streaks moving into the throat.
-      for (let i = 0; i < 14; i++) {
-        const particle = document.createElement('span');
-        particle.className = 'wormhole-particle fly';
-        particle.style.position = 'fixed';
-        particle.style.left = `${sx + (Math.random() - .5) * 10}px`;
-        particle.style.top = `${sy + (Math.random() - .5) * 10}px`;
-        particle.style.width = '3px';
-        particle.style.height = '3px';
-        particle.style.borderRadius = '50%';
-        particle.style.background = '#fff';
-        particle.style.boxShadow = '0 0 8px rgba(255,255,255,.9)';
-        particle.style.zIndex = '10001';
-        const pdx = dx * (.42 + Math.random() * .52);
-        const pdy = dy * (.42 + Math.random() * .52) + (Math.random() - .5) * 18;
-        particle.style.setProperty('--pdx', `${pdx}px`);
-        particle.style.setProperty('--pdy', `${pdy}px`);
-        particle.animate(
-          [
-            {opacity:.85, transform:'translate(0,0) scale(1)'},
-            {opacity:0, transform:`translate(${pdx}px,${pdy}px) scale(.08)`}
-          ],
-          {duration:900 + Math.random()*220, delay:i*20, easing:'cubic-bezier(.25,.7,.15,1)', fill:'forwards'}
-        );
-        document.body.appendChild(particle);
-        setTimeout(() => particle.remove(), 1300);
-      }
-
-      // When the visual transition finishes, reveal the real destination in a new tab.
-      setTimeout(() => {
-        if (destinationWindow && !destinationWindow.closed) {
-          destinationWindow.location.href = link.href;
-          destinationWindow.focus();
-        } else {
-          window.open(link.href, '_blank', 'noopener,noreferrer');
-        }
-      }, 1900);
-
-      setTimeout(() => {
-        clone.remove();
-        link.style.visibility = '';
-        hole.classList.remove('pulse');
-        cluster.dataset.wormholeBusy = '0';
-      }, 2050);
-    });
-  });
-})();
-
-// Clicking the home-page wormhole opens GitHub after a short warp transition.
+// Home-page wormhole: clicking it transitions into GitHub in exactly one new tab.
 (() => {
   if (!document.body.classList.contains('home-page')) return;
 
@@ -424,46 +306,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const githubUrl = 'https://github.com/PrabalShahi';
   let busy = false;
 
-  const launchGitHub = () => {
+  const go = () => {
     if (busy) return;
     busy = true;
 
-    // Open the GitHub tab from the user gesture to avoid popup blocking.
-    const destination = window.open('about:blank', '_blank', 'noopener,noreferrer');
+    // Open GitHub directly from the click gesture. No blank intermediary tab.
+    const destination = window.open(githubUrl, '_blank', 'noopener,noreferrer');
 
-    // Pulse the wormhole while the transition runs.
     hole.classList.add('pulse');
 
-    // Create a brief luminous collapse into the wormhole throat.
-    const implosion = document.createElement('span');
-    implosion.className = 'wormhole-click-implosion';
-    hole.appendChild(implosion);
+    const flash = document.createElement('span');
+    flash.className = 'wormhole-click-implosion';
+    hole.appendChild(flash);
 
-    const burst = document.createElement('span');
-    burst.className = 'wormhole-click-burst';
-    hole.appendChild(burst);
-
-    const finish = () => {
-      if (destination && !destination.closed) {
-        destination.location.href = githubUrl;
-        destination.focus();
-      } else {
-        window.open(githubUrl, '_blank', 'noopener,noreferrer');
-      }
-      implosion.remove();
-      burst.remove();
+    setTimeout(() => {
+      flash.remove();
       hole.classList.remove('pulse');
       busy = false;
-    };
+      if (destination && !destination.closed) {
+        try { destination.focus(); } catch (_) {}
+      }
+    }, 1200);
 
-    setTimeout(finish, 1150);
+    if (!destination) {
+      window.location.href = githubUrl;
+    }
   };
 
-  hole.addEventListener('click', launchGitHub);
+  hole.addEventListener('click', go);
   hole.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      launchGitHub();
+      go();
     }
   });
 })();

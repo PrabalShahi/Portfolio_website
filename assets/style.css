@@ -1231,84 +1231,46 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   .social-wormhole{transform:scale(.86);transform-origin:top center}
 }
 
-/* GitHub-only home-page wormhole */
-.wormhole-only-cluster{
-  min-width:100px;
-  cursor:pointer;
-}
-.wormhole-clickable{
-  cursor:pointer;
-  outline:none;
-  transition:filter .2s ease, transform .2s ease;
-}
-.wormhole-clickable:hover,
-.wormhole-clickable:focus-visible{
-  filter:grayscale(1) brightness(1.18);
-  transform:scale(1.04);
-}
-.wormhole-clickable:focus-visible{
-  box-shadow:0 0 0 1px rgba(255,255,255,.45),0 0 24px rgba(255,255,255,.12);
-  border-radius:50%;
-}
 
-.wormhole-click-implosion{
-  position:absolute;
-  left:50%;top:48%;
-  width:42px;height:18px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.9);
-  transform:translate(-50%,-50%) scale(1);
-  box-shadow:0 0 8px rgba(255,255,255,.35),0 0 22px rgba(255,255,255,.12);
-  pointer-events:none;
-  z-index:8;
-  animation:wormholeImplode 1.05s cubic-bezier(.18,.74,.12,1) forwards;
-}
-.wormhole-click-implosion::after{
-  content:"";
-  position:absolute;
-  left:50%;top:50%;
-  width:70%;height:70%;
-  border-radius:50%;
-  background:radial-gradient(ellipse,#fff 0 8%,rgba(255,255,255,.4) 18%,transparent 64%);
-  transform:translate(-50%,-50%);
-  filter:blur(2px);
-  animation:wormholeCoreFlash 1.05s ease-out forwards;
-}
-.wormhole-click-burst{
-  position:absolute;
-  left:50%;top:48%;
-  width:8px;height:8px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.8);
-  transform:translate(-50%,-50%);
-  pointer-events:none;
-  z-index:9;
-  animation:wormholeBurst 1.05s ease-out forwards;
-}
-@keyframes wormholeImplode{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(1.5)}
-  18%{opacity:1}
-  72%{opacity:.95;transform:translate(-50%,-50%) scale(.55)}
-  100%{opacity:0;transform:translate(-50%,-50%) scale(.06)}
-}
-@keyframes wormholeCoreFlash{
-  0%,100%{opacity:0}
-  18%{opacity:.75}
-  52%{opacity:1}
-  100%{opacity:0}
-}
-@keyframes wormholeBurst{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(.25)}
-  30%{opacity:.85}
-  100%{opacity:0;transform:translate(-50%,-50%) scale(6)}
-}
-
-/* Small alignment adjustment: place the home-page wormhole slightly lower. */
+/* Final visual alignment: keep the wormhole centered under the social area,
+   but place it slightly lower so it sits naturally with the hanging planets. */
 .home-social-cluster.wormhole-only-cluster{
-  transform:translateY(3px);
+  position:relative;
+  top:7px;
+  transform:none;
 }
 @media(max-width:780px){
   .home-social-cluster.wormhole-only-cluster{
-    transform:translateY(5px);
+    top:6px;
+    transform:none;
   }
+}
+
+/* GitHub-only wormhole interaction helpers. */
+.wormhole-clickable{
+  cursor:pointer;
+  outline:none;
+}
+.wormhole-clickable:hover{
+  filter:grayscale(1) brightness(1.14);
+}
+.wormhole-click-implosion{
+  position:absolute;
+  left:50%;
+  top:48%;
+  width:42px;
+  height:18px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.92);
+  transform:translate(-50%,-50%) scale(1);
+  box-shadow:0 0 8px rgba(255,255,255,.34),0 0 22px rgba(255,255,255,.12);
+  pointer-events:none;
+  z-index:20;
+  animation:wormholeImplodeFinal 1.05s cubic-bezier(.18,.74,.12,1) forwards;
+}
+@keyframes wormholeImplodeFinal{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(1.35)}
+  18%{opacity:1}
+  72%{opacity:.92;transform:translate(-50%,-50%) scale(.5)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(.03)}
 }
