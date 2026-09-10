@@ -344,22 +344,32 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
-// About-page dark/light theme switch.
-// Dark mode is always the initial state; light mode is temporary for the current page.
+// Site-wide dark/light theme.
+// About page owns the sun control; the selected theme persists across every page.
 (() => {
   const sun = document.querySelector('.theme-sun-toggle');
-  if (!sun) return;
+  const storageKey = 'prabal-theme';
 
-  const setLightMode = (enabled) => {
+  const setLightMode = (enabled, persist = true) => {
     document.body.classList.toggle('light-mode', enabled);
-    sun.setAttribute('aria-pressed', String(enabled));
-    sun.setAttribute('aria-label', enabled ? 'Switch to dark mode' : 'Switch to light mode');
+    if (sun) {
+      sun.setAttribute('aria-pressed', String(enabled));
+      sun.setAttribute('aria-label', enabled ? 'Switch to dark mode' : 'Switch to light mode');
+    }
+    if (persist) {
+      try {
+        localStorage.setItem(storageKey, enabled ? 'light' : 'dark');
+      } catch (_) {}
+    }
   };
 
-  // Explicitly force dark mode on page load.
-  setLightMode(false);
+  let savedTheme = 'dark';
+  try { savedTheme = localStorage.getItem(storageKey) || 'dark'; } catch (_) {}
+  setLightMode(savedTheme === 'light', false);
 
-  sun.addEventListener('click', () => {
-    setLightMode(!document.body.classList.contains('light-mode'));
-  });
+  if (sun) {
+    sun.addEventListener('click', () => {
+      setLightMode(!document.body.classList.contains('light-mode'));
+    });
+  }
 })();

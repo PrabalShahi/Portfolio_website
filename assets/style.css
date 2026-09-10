@@ -1909,27 +1909,6 @@ body.light-mode .stars{
   opacity:.35;
   filter:invert(1);
 }
-body.light-mode .topbar{
-  filter:none;
-  background:linear-gradient(180deg,rgba(248,248,248,.97),rgba(238,238,238,.83));
-  border-bottom-color:#cfcfcf;
-}
-body.light-mode .topbar:after{
-  background:linear-gradient(90deg,transparent,#aaa 18%,#666 50%,#aaa 82%,transparent);
-}
-body.light-mode .brand b{color:#555}
-body.light-mode .pulsar-logo{
-  filter:grayscale(1) brightness(.7);
-}
-body.light-mode .planet-nav .planet-item{
-  color:#555;
-}
-body.light-mode .planet-label{
-  color:#5a5a5a;
-}
-body.light-mode .planet-item.active .planet-label{
-  color:#161616;
-}
 body.light-mode .about-hero h1{
   color:#141414;
 }
@@ -2032,19 +2011,33 @@ body.light-mode .sun-rays:after{
     23px -23px 0 #e0ad35,
     -23px -23px 0 #e0ad35;
 }
-body.light-mode .planet{
-  filter:grayscale(1) brightness(.92) contrast(1.02);
-}
-body.light-mode .thread{
-  background:#777 !important;
-  opacity:.7;
-}
-body.light-mode .wormhole-clickable,
-body.light-mode .wormhole-clickable *{
-  filter:grayscale(1);
+/* Only the wormhole is darkened in light mode; the navigation bar remains unchanged. */
+body.light-mode .wormhole-clickable{
+  filter:grayscale(1) brightness(.18);
 }
 body.light-mode .profile-owl{
   filter:grayscale(1) brightness(.94) drop-shadow(0 8px 10px rgba(0,0,0,.18));
+}
+
+/* In light mode the owl rests completely still with its eyes closed. */
+body.light-mode .profile-owl,
+body.light-mode .owl-head,
+body.light-mode .owl-eye,
+body.light-mode .owl-pupil,
+body.light-mode .ear-left,
+body.light-mode .ear-right,
+body.light-mode .feather,
+body.light-mode .chest-feather{
+  animation:none !important;
+}
+body.light-mode .owl-eye{
+  transform-box:fill-box;
+  transform-origin:center;
+  transform:scaleY(.06);
+}
+body.light-mode .owl-pupil,
+body.light-mode .profile-owl circle{
+  opacity:0;
 }
 
 /* Smooth global transition when toggling. */

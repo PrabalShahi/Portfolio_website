@@ -11,6 +11,9 @@
  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body class="page-shell">
+  <script>
+    try { if (localStorage.getItem('prabal-theme') === 'light') document.body.classList.add('light-mode'); } catch (_) {}
+  </script>
  <div class="grid-bg"></div><div class="stars" aria-hidden="true"></div>
  <header class="topbar">
 
