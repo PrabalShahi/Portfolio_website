@@ -344,42 +344,39 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
-
-// Global persistent dark/light mode.
-// Dark mode is the default only when no preference has been saved.
-// Clicking the About-page sun stores the selected theme for every portfolio page.
+// Site-wide dark/light theme switch.
+// The About page provides the sun control; the selected theme persists across all pages.
 (() => {
-  const STORAGE_KEY = 'prabal-theme';
+  const sun = document.querySelector('.theme-sun-toggle');
+  const storageKey = 'prabal-theme';
 
-  const getTheme = () => {
-    try { return localStorage.getItem(STORAGE_KEY) || 'dark'; }
-    catch (_) { return 'dark'; }
-  };
-
-  const applyTheme = (theme) => {
-    const light = theme === 'light';
-    document.documentElement.classList.toggle('light-mode', light);
-    document.documentElement.dataset.theme = light ? 'light' : 'dark';
-
-    const sun = document.querySelector('.theme-sun-toggle');
-    if (sun) {
-      sun.setAttribute('aria-pressed', String(light));
-      sun.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  const getSavedTheme = () => {
+    try {
+      return localStorage.getItem(storageKey) === 'light';
+    } catch (_) {
+      return false;
     }
   };
 
-  // Always resolve theme from the saved site preference before the page is interactive.
-  applyTheme(getTheme());
+  const setLightMode = (enabled, persist = true) => {
+    document.body.classList.toggle('light-mode', enabled);
+    if (sun) {
+      sun.setAttribute('aria-pressed', String(enabled));
+      sun.setAttribute('aria-label', enabled ? 'Switch to dark mode' : 'Switch to light mode');
+    }
+    if (persist) {
+      try {
+        localStorage.setItem(storageKey, enabled ? 'light' : 'dark');
+      } catch (_) {}
+    }
+  };
 
-  const sun = document.querySelector('.theme-sun-toggle');
-  if (!sun) return;
+  // Preserve the theme selected on the previous page. Default remains dark.
+  setLightMode(getSavedTheme(), false);
 
-  sun.addEventListener('click', () => {
-    const next = document.documentElement.classList.contains('light-mode') ? 'dark' : 'light';
-
-    try { localStorage.setItem(STORAGE_KEY, next); }
-    catch (_) {}
-
-    applyTheme(next);
-  });
+  if (sun) {
+    sun.addEventListener('click', () => {
+      setLightMode(!document.body.classList.contains('light-mode'), true);
+    });
+  }
 })();
