@@ -295,14 +295,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-// Singleton GitHub wormhole handler.
-// Opens exactly one new GitHub tab and never navigates the portfolio tab to GitHub.
+// Home-page wormhole: one GitHub tab only, no navigation in the portfolio tab.
 (() => {
   if (!document.body.classList.contains('home-page')) return;
-
-  if (window.__prabalGithubWormholeBound) return;
-  window.__prabalGithubWormholeBound = true;
 
   const hole = document.querySelector('.wormhole-clickable');
   if (!hole) return;
@@ -310,50 +305,61 @@ document.addEventListener('DOMContentLoaded', () => {
   const githubUrl = 'https://github.com/PrabalShahi';
   let busy = false;
 
-  const openExactlyOneGithubTab = () => {
+  const openGitHub = () => {
     if (busy) return;
     busy = true;
 
-    // IMPORTANT: one and only one programmatic tab-opening operation.
-    // No about:blank tab, no second GitHub window, and no same-tab fallback.
-    const tab = window.open(githubUrl, '_blank');
+    // Open exactly one GitHub tab directly from the user's click.
+    // The portfolio tab stays on the Home page throughout the visual transition.
+    const destination = window.open(githubUrl, '_blank', 'noopener,noreferrer');
 
-    // Visual-only transition stays on the portfolio page.
     hole.classList.add('wormhole-github-pulse');
 
     const flare = document.createElement('span');
     flare.className = 'wormhole-github-flare';
     hole.appendChild(flare);
 
-    // If the browser blocks window.open, try one user-gesture-style anchor fallback.
-    // It still targets _blank and never redirects the portfolio tab.
-    if (!tab) {
-      const fallback = document.createElement('a');
-      fallback.href = githubUrl;
-      fallback.target = '_blank';
-      fallback.rel = 'noopener noreferrer';
-      fallback.style.display = 'none';
-      document.body.appendChild(fallback);
-      fallback.click();
-      fallback.remove();
-    }
-
+    // Brief visual collapse into the wormhole, then leave the home page untouched.
     setTimeout(() => {
       flare.remove();
       hole.classList.remove('wormhole-github-pulse');
       busy = false;
+      if (destination && !destination.closed) {
+        try { destination.focus(); } catch (_) {}
+      }
+    }, 1150);
 
-      try {
-        if (tab && !tab.closed) tab.focus();
-      } catch (_) {}
-    }, 1200);
+    // Only use same-tab fallback if the browser blocks opening a new tab.
+    if (!destination) {
+      window.location.href = githubUrl;
+    }
   };
 
-  hole.addEventListener('click', openExactlyOneGithubTab, { once: false });
+  hole.addEventListener('click', openGitHub);
   hole.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      openExactlyOneGithubTab();
+      openGitHub();
     }
+  });
+})();
+
+// About-page dark/light theme switch.
+// Dark mode is always the initial state; light mode is temporary for the current page.
+(() => {
+  const sun = document.querySelector('.theme-sun-toggle');
+  if (!sun) return;
+
+  const setLightMode = (enabled) => {
+    document.body.classList.toggle('light-mode', enabled);
+    sun.setAttribute('aria-pressed', String(enabled));
+    sun.setAttribute('aria-label', enabled ? 'Switch to dark mode' : 'Switch to light mode');
+  };
+
+  // Explicitly force dark mode on page load.
+  setLightMode(false);
+
+  sun.addEventListener('click', () => {
+    setLightMode(!document.body.classList.contains('light-mode'));
   });
 })();
