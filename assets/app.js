@@ -413,3 +413,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 })();
+
+// Clicking the home-page wormhole opens GitHub after a short warp transition.
+(() => {
+  if (!document.body.classList.contains('home-page')) return;
+
+  const hole = document.querySelector('.wormhole-clickable');
+  if (!hole) return;
+
+  const githubUrl = 'https://github.com/PrabalShahi';
+  let busy = false;
+
+  const launchGitHub = () => {
+    if (busy) return;
+    busy = true;
+
+    // Open the GitHub tab from the user gesture to avoid popup blocking.
+    const destination = window.open('about:blank', '_blank', 'noopener,noreferrer');
+
+    // Pulse the wormhole while the transition runs.
+    hole.classList.add('pulse');
+
+    // Create a brief luminous collapse into the wormhole throat.
+    const implosion = document.createElement('span');
+    implosion.className = 'wormhole-click-implosion';
+    hole.appendChild(implosion);
+
+    const burst = document.createElement('span');
+    burst.className = 'wormhole-click-burst';
+    hole.appendChild(burst);
+
+    const finish = () => {
+      if (destination && !destination.closed) {
+        destination.location.href = githubUrl;
+        destination.focus();
+      } else {
+        window.open(githubUrl, '_blank', 'noopener,noreferrer');
+      }
+      implosion.remove();
+      burst.remove();
+      hole.classList.remove('pulse');
+      busy = false;
+    };
+
+    setTimeout(finish, 1150);
+  };
+
+  hole.addEventListener('click', launchGitHub);
+  hole.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      launchGitHub();
+    }
+  });
+})();
