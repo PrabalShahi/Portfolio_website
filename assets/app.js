@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// Home-page GitHub / LinkedIn wormhole transition.
+// Home-page GH / LinkedIn wormhole transition.
 (() => {
   if (!document.body.classList.contains('home-page')) return;
 
@@ -304,72 +304,105 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const links = [...cluster.querySelectorAll('.socials a')];
 
+  const navigateAfterWormhole = (url, target, popup) => {
+    if (popup && !popup.closed) {
+      popup.location.href = url;
+    } else if (target === '_blank') {
+      window.location.href = url;
+    } else {
+      window.location.href = url;
+    }
+  };
+
   links.forEach((link) => {
     link.addEventListener('click', (event) => {
-      if (cluster.dataset.wormholeBusy === '1') return;
       event.preventDefault();
+
+      if (cluster.dataset.wormholeBusy === '1') return;
       cluster.dataset.wormholeBusy = '1';
+
+      // Open the destination synchronously so popup blockers do not kill the final navigation.
+      const target = link.getAttribute('target');
+      let popup = null;
+      if (target === '_blank') {
+        popup = window.open('about:blank', '_blank', 'noopener,noreferrer');
+        if (!popup) {
+          cluster.dataset.wormholeBusy = '0';
+          window.location.href = link.href;
+          return;
+        }
+      }
 
       const b = link.getBoundingClientRect();
       const h = hole.getBoundingClientRect();
 
-      const sx = b.left + b.width / 2;
-      const sy = b.top + b.height / 2;
-      const hx = h.left + h.width / 2;
-      const hy = h.top + h.height / 2;
+      const startX = b.left;
+      const startY = b.top;
+      const startCX = b.left + b.width / 2;
+      const startCY = b.top + b.height / 2;
+      const endCX = h.left + h.width / 2;
+      const endCY = h.top + h.height / 2;
+
+      const dx = endCX - startCX;
+      const dy = endCY - startCY;
 
       const clone = link.cloneNode(true);
       clone.className = 'wormhole-button-clone';
       clone.textContent = link.textContent;
-      clone.style.left = `${b.left}px`;
-      clone.style.top = `${b.top}px`;
+      clone.removeAttribute('href');
+      clone.removeAttribute('target');
+      clone.style.left = `${startX}px`;
+      clone.style.top = `${startY}px`;
       clone.style.width = `${b.width}px`;
       clone.style.height = `${b.height}px`;
 
-      const dx = hx - sx;
-      const dy = hy - sy;
+      const side = link === links[0] ? -1 : 1;
 
-      clone.style.setProperty('--wx1', `${dx * .34}px`);
-      clone.style.setProperty('--wy1', `${dy * .25 - 7}px`);
-      clone.style.setProperty('--wx2', `${dx * .70}px`);
-      clone.style.setProperty('--wy2', `${dy * .62}px`);
-      clone.style.setProperty('--wx3', `${dx * .88}px`);
-      clone.style.setProperty('--wy3', `${dy * .88}px`);
-      clone.style.setProperty('--wx4', `${dx}px`);
-      clone.style.setProperty('--wy4', `${dy}px`);
-      clone.style.setProperty('--wrot', link === links[0] ? '-8deg' : '8deg');
+      clone.style.setProperty('--wx1', `${dx * .22}px`);
+      clone.style.setProperty('--wy1', `${dy * .20 - 3}px`);
+      clone.style.setProperty('--wx2', `${dx * .45 + side * 4}px`);
+      clone.style.setProperty('--wy2', `${dy * .43 - 5}px`);
+      clone.style.setProperty('--wx3', `${dx * .68}px`);
+      clone.style.setProperty('--wy3', `${dy * .70}px`);
+      clone.style.setProperty('--wx4', `${dx * .86}px`);
+      clone.style.setProperty('--wy4', `${dy * .86}px`);
+      clone.style.setProperty('--wx5', `${dx}px`);
+      clone.style.setProperty('--wy5', `${dy}px`);
+      clone.style.setProperty('--wrot', `${side * 5}deg`);
+      clone.style.setProperty('--wrot2', `${side * 12}deg`);
+      clone.style.setProperty('--wrot3', `${side * 23}deg`);
+      clone.style.setProperty('--wrot4', `${side * 42}deg`);
+      clone.style.setProperty('--wrot5', `${side * 68}deg`);
 
       document.body.appendChild(clone);
-
-      // The real control disappears only while its animated copy travels.
       link.style.visibility = 'hidden';
-      hole.classList.add('wormhole-pulse');
 
-      // Small particles follow the same path into the wormhole.
-      for (let i = 0; i < 8; i++) {
-        const particle = document.createElement('span');
-        particle.className = 'wormhole-particle fly';
-        particle.style.left = `${sx}px`;
-        particle.style.top = `${sy}px`;
-        particle.style.setProperty('--pdx', `${dx * (.42 + Math.random() * .52)}px`);
-        particle.style.setProperty('--pdy', `${dy * (.42 + Math.random() * .52)}px`);
-        particle.style.animationDelay = `${i * 28}ms`;
-        document.body.appendChild(particle);
-        setTimeout(() => particle.remove(), 1100);
+      hole.classList.add('pulse');
+
+      // Draw a short-lived stream of particles from the button into the throat.
+      for (let i = 0; i < 13; i++) {
+        const p = document.createElement('span');
+        p.className = 'wormhole-particle fly';
+        p.style.left = `${startCX + (Math.random() - .5) * 12}px`;
+        p.style.top = `${startCY + (Math.random() - .5) * 12}px`;
+        p.style.setProperty('--pdx', `${dx * (.55 + Math.random() * .42)}px`);
+        p.style.setProperty('--pdy', `${dy * (.55 + Math.random() * .42) + (Math.random() - .5) * 14}px`);
+        p.style.animationDelay = `${i * 24}ms`;
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1200);
       }
 
-      clone.addEventListener('animationend', () => {
-        setTimeout(() => {
-          window.open(link.href, link.target || '_self');
-        }, 60);
-      }, { once: true });
+      // Navigate only after the visual transition has completed.
+      setTimeout(() => {
+        navigateAfterWormhole(link.href, target, popup);
+      }, 1700);
 
       setTimeout(() => {
         clone.remove();
         link.style.visibility = '';
-        hole.classList.remove('wormhole-pulse');
+        hole.classList.remove('pulse');
         cluster.dataset.wormholeBusy = '0';
-      }, 1710);
+      }, 1860);
     });
   });
 })();
