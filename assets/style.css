@@ -1302,3 +1302,13 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   30%{opacity:.85}
   100%{opacity:0;transform:translate(-50%,-50%) scale(6)}
 }
+
+/* Small alignment adjustment: place the home-page wormhole slightly lower. */
+.home-social-cluster.wormhole-only-cluster{
+  transform:translateY(3px);
+}
+@media(max-width:780px){
+  .home-social-cluster.wormhole-only-cluster{
+    transform:translateY(5px);
+  }
+}
