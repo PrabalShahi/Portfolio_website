@@ -1390,3 +1390,174 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
     animation:none !important;
   }
 }
+
+/* Refined owl posture: slightly smaller, seated on the twig, with lively motion. */
+.profile-owl{
+  top:-63px;
+  width:91px;
+  height:71px;
+  transform:translateX(-50%);
+  animation:owl-breathe-refined 3.9s ease-in-out infinite;
+}
+.owl-svg{overflow:visible}
+.owl-twig{
+  stroke:#747474;
+  stroke-width:3.2;
+  stroke-linecap:round;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.55));
+}
+.owl-twig-small{
+  stroke:#6c6c6c;
+  stroke-width:1.5;
+  stroke-linecap:round;
+}
+.owl-legs path{
+  stroke:#787878;
+  stroke-width:3;
+  stroke-linecap:round;
+}
+.owl-talon{
+  stroke:#6a6a6a;
+  stroke-width:1.7;
+  stroke-linecap:round;
+}
+.owl-legs{
+  transform-origin:70px 79px;
+  animation:owl-perch-grip 4.8s ease-in-out infinite;
+}
+.owl-twig{
+  transform-origin:70px 90px;
+  animation:owl-twig-sway 5.6s ease-in-out infinite;
+}
+.owl-body{
+  animation:owl-body-breathe 3.9s ease-in-out infinite;
+  transform-origin:70px 79px;
+}
+.owl-head{
+  animation:owl-head-attentive 5.4s ease-in-out infinite;
+}
+.owl-eye{
+  animation:owl-blink-attentive 5.8s ease-in-out infinite;
+}
+.owl-eye-right{animation-delay:.12s}
+.owl-pupil{
+  animation:owl-watch 6.8s ease-in-out infinite;
+}
+.ear-left,.ear-right{
+  animation:owl-ear-alert 4.2s ease-in-out infinite;
+}
+.ear-right{animation-delay:.2s}
+.feather{
+  animation:owl-feather-alert 3.1s ease-in-out infinite;
+}
+.feather-right{animation-delay:.16s}
+.chest-feather{
+  animation:owl-chest-alert 3.2s ease-in-out infinite;
+}
+@keyframes owl-breathe-refined{
+  0%,100%{transform:translateX(-50%) translateY(1px) scale(1)}
+  38%{transform:translateX(-50%) translateY(-1px) scale(1.012)}
+  62%{transform:translateX(-50%) translateY(0) scale(1.006)}
+}
+@keyframes owl-body-breathe{
+  0%,100%{transform:translateY(0) scaleY(1)}
+  45%{transform:translateY(-1px) scaleY(1.025)}
+  58%{transform:translateY(0) scaleY(1.008)}
+}
+@keyframes owl-head-attentive{
+  0%,100%{transform:rotate(0deg)}
+  15%{transform:rotate(-2.8deg)}
+  30%{transform:rotate(-1deg)}
+  50%{transform:rotate(1.8deg)}
+  64%{transform:rotate(2.6deg)}
+  79%{transform:rotate(.2deg)}
+}
+@keyframes owl-blink-attentive{
+  0%,38%,41%,72%,75%,100%{transform:scaleY(1)}
+  39%,40%,73%,74%{transform:scaleY(.07)}
+}
+@keyframes owl-watch{
+  0%,30%,100%{transform:translateX(0)}
+  36%{transform:translateX(1.3px)}
+  44%{transform:translateX(1.3px)}
+  52%{transform:translateX(-1.2px)}
+  61%{transform:translateX(-1.2px)}
+  68%{transform:translateX(.2px)}
+}
+@keyframes owl-ear-alert{
+  0%,74%,100%{transform:rotate(0deg)}
+  78%{transform:rotate(-3deg)}
+  82%{transform:rotate(1.5deg)}
+  86%{transform:rotate(0deg)}
+}
+@keyframes owl-feather-alert{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  47%{transform:translateY(1px) rotate(-1.4deg)}
+  54%{transform:translateY(0) rotate(1.2deg)}
+}
+@keyframes owl-chest-alert{
+  0%,100%{transform:scaleY(1)}
+  48%{transform:scaleY(1.055)}
+  56%{transform:scaleY(1.012)}
+}
+@keyframes owl-perch-grip{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  46%{transform:translateY(1px) rotate(-.3deg)}
+  53%{transform:translateY(0) rotate(.3deg)}
+}
+@keyframes owl-twig-sway{
+  0%,100%{transform:rotate(0deg)}
+  50%{transform:rotate(.45deg)}
+}
+@media(max-width:780px){
+  .profile-owl{
+    top:-53px;
+    width:77px;
+    height:61px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .profile-owl,.owl-body,.owl-head,.owl-eye,.owl-pupil,.ear-left,.ear-right,.feather,.chest-feather,.owl-legs,.owl-twig{
+    animation:none !important;
+  }
+}
+
+/* Owl sits directly on the profile panel — no twig/perch. */
+.owl-twig,
+.owl-twig-small{
+  display:none !important;
+}
+.profile-owl{
+  top:-61px;
+  width:88px;
+  height:72px;
+  transform:translateX(-50%);
+  z-index:12;
+}
+.owl-panel-feet{
+  transform-origin:70px 88px;
+  animation:owl-panel-settle 4.6s ease-in-out infinite;
+}
+.owl-panel-feet .owl-leg-left,
+.owl-panel-feet .owl-leg-right{
+  stroke:#787878;
+  stroke-width:3;
+  stroke-linecap:round;
+}
+.owl-panel-feet .owl-talon{
+  stroke:#666;
+  stroke-width:1.8;
+  stroke-linecap:round;
+}
+@keyframes owl-panel-settle{
+  0%,100%{transform:translateY(0)}
+  48%{transform:translateY(.7px)}
+  56%{transform:translateY(0)}
+}
+@media(max-width:780px){
+  .profile-owl{
+    top:-51px;
+    width:75px;
+    height:62px;
+  }
+}
