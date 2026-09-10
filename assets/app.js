@@ -295,9 +295,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// Home-page wormhole: one GitHub tab only, no navigation in the portfolio tab.
+
+// Singleton GitHub wormhole handler.
+// Opens exactly one new GitHub tab and never navigates the portfolio tab to GitHub.
 (() => {
   if (!document.body.classList.contains('home-page')) return;
+
+  if (window.__prabalGithubWormholeBound) return;
+  window.__prabalGithubWormholeBound = true;
 
   const hole = document.querySelector('.wormhole-clickable');
   if (!hole) return;
@@ -305,41 +310,50 @@ document.addEventListener('DOMContentLoaded', () => {
   const githubUrl = 'https://github.com/PrabalShahi';
   let busy = false;
 
-  const openGitHub = () => {
+  const openExactlyOneGithubTab = () => {
     if (busy) return;
     busy = true;
 
-    // Open exactly one GitHub tab directly from the user's click.
-    // The portfolio tab stays on the Home page throughout the visual transition.
-    const destination = window.open(githubUrl, '_blank', 'noopener,noreferrer');
+    // IMPORTANT: one and only one programmatic tab-opening operation.
+    // No about:blank tab, no second GitHub window, and no same-tab fallback.
+    const tab = window.open(githubUrl, '_blank');
 
+    // Visual-only transition stays on the portfolio page.
     hole.classList.add('wormhole-github-pulse');
 
     const flare = document.createElement('span');
     flare.className = 'wormhole-github-flare';
     hole.appendChild(flare);
 
-    // Brief visual collapse into the wormhole, then leave the home page untouched.
+    // If the browser blocks window.open, try one user-gesture-style anchor fallback.
+    // It still targets _blank and never redirects the portfolio tab.
+    if (!tab) {
+      const fallback = document.createElement('a');
+      fallback.href = githubUrl;
+      fallback.target = '_blank';
+      fallback.rel = 'noopener noreferrer';
+      fallback.style.display = 'none';
+      document.body.appendChild(fallback);
+      fallback.click();
+      fallback.remove();
+    }
+
     setTimeout(() => {
       flare.remove();
       hole.classList.remove('wormhole-github-pulse');
       busy = false;
-      if (destination && !destination.closed) {
-        try { destination.focus(); } catch (_) {}
-      }
-    }, 1150);
 
-    // Only use same-tab fallback if the browser blocks opening a new tab.
-    if (!destination) {
-      window.location.href = githubUrl;
-    }
+      try {
+        if (tab && !tab.closed) tab.focus();
+      } catch (_) {}
+    }, 1200);
   };
 
-  hole.addEventListener('click', openGitHub);
+  hole.addEventListener('click', openExactlyOneGithubTab, { once: false });
   hole.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      openGitHub();
+      openExactlyOneGithubTab();
     }
   });
 })();

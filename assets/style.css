@@ -1810,3 +1810,6 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
     animation:none !important;
   }
 }
+
+/* GitHub wormhole: keep the target as a visual-only click surface. */
+.wormhole-clickable{cursor:pointer}
