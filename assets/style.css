@@ -1812,67 +1812,206 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
 }
 
 /* ==========================================================
-   DARK / LIGHT MODE
-   Default is always DARK. Light mode is enabled only by the
-   About-page sun control for the current session.
+   Persistent dark/light mode
    ========================================================== */
+:root.light-mode,
+html.light-mode{
+  --bg:#eeeeee;
+  --panel:#ffffff;
+  --panel2:#f4f4f4;
+  --line:#c3c3c3;
+  --cyan:#313131;
+  --cyan2:#666666;
+  --text:#2b2b2b;
+  --muted:#686868;
+  --white:#171717;
+  --shadow:0 10px 30px rgba(0,0,0,.08);
+}
+html.light-mode body{
+  background:#eeeeee !important;
+  color:#2b2b2b;
+}
+html.light-mode .grid-bg{
+  filter:none;
+  background:
+    linear-gradient(rgba(0,0,0,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,.045) 1px,transparent 1px),
+    radial-gradient(circle at 50% 20%,rgba(0,0,0,.022),transparent 48%);
+}
+html.light-mode .stars{opacity:.22;filter:invert(1)}
+html.light-mode .topbar{filter:none}
+html.light-mode .brand b{color:#555}
+html.light-mode .pulsar-logo{filter:grayscale(1) brightness(.72)}
+html.light-mode .planet-label{color:#555}
+html.light-mode .planet-item.active .planet-label{color:#161616}
+html.light-mode .about-hero h1{color:#141414}
+html.light-mode .about-hero h1 .name-primary{color:#151515}
+html.light-mode .about-hero h1 .surname{color:#727272}
+html.light-mode .hero-sub{color:#303030}
+html.light-mode .hero-copy-text{color:#555}
+html.light-mode .status-line{color:#4d4d4d;border-color:#c5c5c5;background:rgba(255,255,255,.55)}
+html.light-mode .hero-terminal{color:#515151}
+html.light-mode .cta-row .btn{background:#fff;color:#252525;border-color:#bdbdbd}
+html.light-mode .cta-row .btn.primary{background:linear-gradient(180deg,#242424,#111);color:#f2f2f2;border-color:#242424;box-shadow:0 8px 22px rgba(0,0,0,.15)}
+html.light-mode .about-meta{border-color:#c8c8c8}
+html.light-mode .about-meta div{border-color:#d2d2d2}
+html.light-mode .about-meta span{color:#777}
+html.light-mode .about-meta b{color:#282828}
+html.light-mode .about-console{
+  background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(241,241,241,.98));
+  border-color:#bdbdbd;
+  box-shadow:0 18px 42px rgba(0,0,0,.10),inset 0 0 0 1px rgba(255,255,255,.45);
+}
+html.light-mode .console-head{border-bottom-color:#d0d0d0}
+html.light-mode .console-head b,html.light-mode .console-head em{color:#505050}
+html.light-mode .console-body{background:rgba(255,255,255,.35)}
+html.light-mode .console-line{border-bottom-color:#dddddd}
+html.light-mode .console-line .key{color:#555}
+html.light-mode .console-line .value{color:#202020}
+html.light-mode .console-line .muted{color:#898989}
+html.light-mode .black-hole{opacity:.13}
+html.light-mode .site-footer{color:#707070;border-top-color:#cdcdcd}
+
+html.light-mode .container .timeline-card,
+html.light-mode .container .feature-card,
+html.light-mode .container .project-card,
+html.light-mode .container .cert-card,
+html.light-mode .container .contact-card,
+html.light-mode .container .resume-card,
+html.light-mode .container .skills-shell{
+  background:linear-gradient(180deg,#ffffff,#f3f3f3);
+  border-color:#c5c5c5;
+  box-shadow:0 10px 28px rgba(0,0,0,.07);
+}
+html.light-mode .project-card h2,
+html.light-mode .cert-card h2,
+html.light-mode .resume-card h2,
+html.light-mode .timeline-card h2,
+html.light-mode .feature-card h2{
+  color:#171717;
+}
+html.light-mode .project-card p,
+html.light-mode .cert-card p,
+html.light-mode .resume-card p,
+html.light-mode .timeline-card p,
+html.light-mode .feature-card p{
+  color:#5b5b5b;
+}
+html.light-mode .tag{
+  color:#303030;
+  background:#f0f0f0;
+  border-color:#bdbdbd;
+}
+html.light-mode .date{color:#555;border-color:#c8c8c8}
+html.light-mode .feature-grid span{
+  background:#f6f6f6;
+  border-color:#d2d2d2;
+  color:#4f4f4f;
+}
+html.light-mode .stack-row{border-top-color:#d1d1d1}
+html.light-mode .stack-row span{color:#7b7b7b}
+html.light-mode .stack-row b{color:#262626}
+html.light-mode .stack-row a{color:#222}
+html.light-mode .filter{color:#656565;border-color:#c7c7c7}
+html.light-mode .filter.active{background:#252525;color:#f0f0f0}
+html.light-mode .skill-tab{background:#f6f6f6;color:#666;border-color:#cfcfcf}
+html.light-mode .skill-tab.active{color:#202020;border-color:#888;box-shadow:inset 0 0 16px rgba(0,0,0,.035)}
+html.light-mode .skill-panel{background:#fff;border-color:#d0d0d0}
+html.light-mode .skill-label{color:#777}
+html.light-mode .chip-grid span{background:#f4f4f4;color:#303030;border-color:#c8c8c8}
+html.light-mode .contact-row{border-bottom-color:#d7d7d7}
+html.light-mode .contact-row span{color:#6b6b6b}
+html.light-mode .contact-row a{color:#292929}
+html.light-mode .resume-icon{background:#f3f3f3;border-color:#bdbdbd;color:#262626}
+html.light-mode .resume-link{color:#222}
+html.light-mode .eyebrow{color:#484848}
+html.light-mode .page-intro h1{color:#171717}
+
+html.light-mode .planet{
+  filter:grayscale(1) brightness(.86) contrast(1.02);
+}
+html.light-mode .thread{
+  background:#777 !important;
+  opacity:.65;
+}
+
+/* Wormhole rings should go dark in light mode. */
+html.light-mode .social-wormhole .wormhole-ring,
+html.light-mode .social-wormhole .wormhole-throat{
+  border-color:rgba(30,30,30,.52) !important;
+  box-shadow:0 0 6px rgba(0,0,0,.08),inset 0 0 5px rgba(0,0,0,.05) !important;
+}
+html.light-mode .social-wormhole .wormhole-halo{
+  opacity:.32 !important;
+  filter:blur(5px) grayscale(1);
+}
+html.light-mode .social-wormhole .wormhole-core{
+  background:#0d0d0d !important;
+  box-shadow:0 0 7px rgba(0,0,0,.16) !important;
+}
+html.light-mode .social-wormhole .wormhole-particle{
+  background:#303030 !important;
+  box-shadow:0 0 6px rgba(0,0,0,.2) !important;
+}
+html.light-mode .social-wormhole .wormhole-beam{
+  opacity:.22 !important;
+  background:linear-gradient(to bottom,transparent,rgba(0,0,0,.25),transparent) !important;
+}
+
+/* The owl closes its eyes and becomes perfectly still in light mode. */
+html.light-mode .profile-owl,
+html.light-mode .profile-owl *{
+  animation:none !important;
+}
+html.light-mode .profile-owl{
+  filter:grayscale(1) brightness(.82) drop-shadow(0 7px 9px rgba(0,0,0,.13));
+}
+html.light-mode .profile-owl .owl-eye{
+  transform:scaleY(.06) !important;
+}
+html.light-mode .profile-owl .owl-pupil{
+  opacity:0 !important;
+}
+html.light-mode .profile-owl .owl-head,
+html.light-mode .profile-owl .owl-body,
+html.light-mode .profile-owl .feather,
+html.light-mode .profile-owl .chest-feather,
+html.light-mode .profile-owl .ear-left,
+html.light-mode .profile-owl .ear-right{
+  animation:none !important;
+}
+
+/* Sun control exists only on the About page and reflects the global theme. */
 .theme-sun-toggle{
   position:fixed;
   left:28px;
   top:26px;
   width:52px;
   height:52px;
+  padding:0;
   border:1px solid #383838;
   border-radius:50%;
-  background:rgba(13,13,13,.86);
+  background:rgba(13,13,13,.88);
   display:grid;
   place-items:center;
   cursor:pointer;
   z-index:60;
-  padding:0;
   box-shadow:inset 0 0 16px rgba(255,255,255,.025),0 8px 24px rgba(0,0,0,.24);
-  transition:background .35s ease,border-color .35s ease,box-shadow .35s ease,transform .25s ease;
+  transition:background .35s ease,border-color .35s ease,box-shadow .5s ease,transform .25s ease;
 }
-.theme-sun-toggle:hover{
-  transform:translateY(-2px) scale(1.03);
-  border-color:#8a8a8a;
-}
+.theme-sun-toggle:hover{transform:translateY(-2px) scale(1.03);border-color:#8a8a8a}
 .sun-orb{
-  width:19px;
-  height:19px;
-  border-radius:50%;
-  background:#aaa;
-  border:1px solid #d0d0d0;
-  box-shadow:0 0 0 rgba(255,255,255,0);
+  width:19px;height:19px;border-radius:50%;
+  background:#aaa;border:1px solid #d0d0d0;
   transition:background .4s ease,box-shadow .5s ease,transform .4s ease;
 }
-.sun-rays,
-.sun-rays:before,
-.sun-rays:after{
-  position:absolute;
-  content:"";
-  width:5px;
-  height:5px;
-  border-radius:50%;
-  background:#777;
-  transition:background .35s ease,box-shadow .5s ease;
-}
 .sun-rays{
-  top:7px;
-  left:23.5px;
-  box-shadow:
-    0 32px 0 #777,
-    0 0 0 0 transparent;
-}
-.sun-rays:before{
-  top:16px;
-  left:-16px;
-  box-shadow:
-    32px 0 0 #777,
-    23px 23px 0 #777,
-    -23px 23px 0 #777,
-    23px -23px 0 #777,
-    -23px -23px 0 #777;
+  position:absolute;left:50%;top:50%;
+  width:5px;height:5px;border-radius:50%;
+  background:#777;
+  transform:translate(-50%,-50%);
+  box-shadow:0 -21px 0 #777,0 21px 0 #777,21px 0 0 #777,-21px 0 0 #777,
+             15px -15px 0 #777,-15px -15px 0 #777,15px 15px 0 #777,-15px 15px 0 #777;
 }
 .theme-sun-toggle:after{
   content:"";
@@ -1882,204 +2021,27 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   border:1px solid rgba(255,255,255,.08);
   pointer-events:none;
 }
-
-/* Light theme surfaces / type. */
-body.light-mode{
-  --bg:#eeeeee;
-  --panel:#ffffff;
-  --panel2:#f4f4f4;
-  --line:#c5c5c5;
-  --cyan:#2f2f2f;
-  --cyan2:#666666;
-  --text:#2a2a2a;
-  --muted:#696969;
-  --white:#171717;
-  --shadow:0 10px 28px rgba(0,0,0,.08);
-  background:#eeeeee !important;
-  color:#2a2a2a;
+html.light-mode .theme-sun-toggle{
+  background:#f8f8f8;
+  border-color:#a7a7a7;
+  box-shadow:0 8px 24px rgba(0,0,0,.10),0 0 24px rgba(255,205,70,.2);
 }
-body.light-mode .grid-bg{
-  filter:none;
-  background:
-    linear-gradient(rgba(0,0,0,.055) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,0,0,.055) 1px,transparent 1px),
-    radial-gradient(circle at 50% 20%,rgba(0,0,0,.025),transparent 48%);
-}
-body.light-mode .stars{
-  opacity:.35;
-  filter:invert(1);
-}
-body.light-mode .topbar{
-  filter:none;
-  background:linear-gradient(180deg,rgba(248,248,248,.97),rgba(238,238,238,.83));
-  border-bottom-color:#cfcfcf;
-}
-body.light-mode .topbar:after{
-  background:linear-gradient(90deg,transparent,#aaa 18%,#666 50%,#aaa 82%,transparent);
-}
-body.light-mode .brand b{color:#555}
-body.light-mode .pulsar-logo{
-  filter:grayscale(1) brightness(.7);
-}
-body.light-mode .planet-nav .planet-item{
-  color:#555;
-}
-body.light-mode .planet-label{
-  color:#5a5a5a;
-}
-body.light-mode .planet-item.active .planet-label{
-  color:#161616;
-}
-body.light-mode .about-hero h1{
-  color:#141414;
-}
-body.light-mode .about-hero h1 .name-primary{color:#151515}
-body.light-mode .about-hero h1 .surname{color:#707070}
-body.light-mode .hero-sub{
-  color:#303030;
-}
-body.light-mode .hero-copy-text{
-  color:#555;
-}
-body.light-mode .status-line{
-  color:#4e4e4e;
-  border-color:#c7c7c7;
-  background:rgba(255,255,255,.58);
-}
-body.light-mode .hero-terminal{
-  color:#515151;
-}
-body.light-mode .cta-row .btn{
-  background:#fff;
-  color:#252525;
-  border-color:#bdbdbd;
-}
-body.light-mode .cta-row .btn.primary{
-  background:linear-gradient(180deg,#202020,#111);
-  color:#f2f2f2;
-  border-color:#202020;
-  box-shadow:0 8px 22px rgba(0,0,0,.16);
-}
-body.light-mode .about-meta{
-  border-color:#c8c8c8;
-}
-body.light-mode .about-meta div{
-  border-color:#d2d2d2;
-}
-body.light-mode .about-meta span{
-  color:#777;
-}
-body.light-mode .about-meta b{
-  color:#272727;
-}
-body.light-mode .about-console{
-  background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(239,239,239,.98));
-  border-color:#bfbfbf;
-  box-shadow:0 20px 48px rgba(0,0,0,.10),inset 0 0 0 1px rgba(255,255,255,.45);
-}
-body.light-mode .console-head{
-  border-bottom-color:#d2d2d2;
-}
-body.light-mode .console-head b,
-body.light-mode .console-head em{
-  color:#4f4f4f;
-}
-body.light-mode .console-body{
-  background:rgba(255,255,255,.28);
-}
-body.light-mode .console-line{
-  border-bottom-color:#dfdfdf;
-}
-body.light-mode .console-line .key{
-  color:#555;
-}
-body.light-mode .console-line .value{
-  color:#202020;
-}
-body.light-mode .console-line .muted{
-  color:#8b8b8b;
-}
-body.light-mode .black-hole{
-  opacity:.18;
-}
-body.light-mode .site-footer{
-  color:#707070;
-  border-top-color:#cfcfcf;
-}
-body.light-mode .theme-sun-toggle{
-  background:#f7f7f7;
-  border-color:#aaa;
-  box-shadow:0 8px 24px rgba(0,0,0,.10),0 0 22px rgba(255,185,65,.18);
-}
-body.light-mode .sun-orb{
-  background:#f3c34e;
-  border-color:#f7d777;
-  box-shadow:
-    0 0 10px rgba(255,208,82,.95),
-    0 0 24px rgba(255,208,82,.65),
-    0 0 42px rgba(255,208,82,.28);
+html.light-mode .sun-orb{
+  background:#f0bf45;
+  border-color:#f7d77a;
+  box-shadow:0 0 10px rgba(255,210,82,.95),0 0 25px rgba(255,210,82,.62),0 0 43px rgba(255,210,82,.26);
   transform:scale(1.08);
 }
-body.light-mode .sun-rays,
-body.light-mode .sun-rays:before,
-body.light-mode .sun-rays:after{
-  background:#e0ad35;
-  box-shadow:
-    0 32px 0 #e0ad35,
-    32px 0 0 #e0ad35,
-    23px 23px 0 #e0ad35,
-    -23px 23px 0 #e0ad35,
-    23px -23px 0 #e0ad35,
-    -23px -23px 0 #e0ad35;
+html.light-mode .sun-rays{
+  background:#dfa936;
+  box-shadow:0 -21px 0 #dfa936,0 21px 0 #dfa936,21px 0 0 #dfa936,-21px 0 0 #dfa936,
+             15px -15px 0 #dfa936,-15px -15px 0 #dfa936,15px 15px 0 #dfa936,-15px 15px 0 #dfa936;
 }
-body.light-mode .planet{
-  filter:grayscale(1) brightness(.92) contrast(1.02);
-}
-body.light-mode .thread{
-  background:#777 !important;
-  opacity:.7;
-}
-body.light-mode .wormhole-clickable,
-body.light-mode .wormhole-clickable *{
-  filter:grayscale(1);
-}
-body.light-mode .profile-owl{
-  filter:grayscale(1) brightness(.94) drop-shadow(0 8px 10px rgba(0,0,0,.18));
-}
-
-/* Smooth global transition when toggling. */
-body,
-.grid-bg,
-.topbar,
-.about-console,
-.console-body,
-.btn,
-.status-line,
-.site-footer{
-  transition:background-color .45s ease,border-color .45s ease,color .45s ease,box-shadow .45s ease,filter .45s ease;
-}
-
-/* Attention-catching but subtle sun motion. */
-@keyframes sunAttention{
-  0%,100%{transform:rotate(0deg) scale(1)}
-  50%{transform:rotate(4deg) scale(1.03)}
-}
-.theme-sun-toggle{
-  animation:sunAttention 5.5s ease-in-out infinite;
-}
-.theme-sun-toggle:active{
-  transform:scale(.96);
-}
+.theme-sun-toggle{animation:sunFloat 5.5s ease-in-out infinite}
+@keyframes sunFloat{0%,100%{rotate:0deg}50%{rotate:4deg}}
 @media(max-width:780px){
-  .theme-sun-toggle{
-    left:14px;
-    top:16px;
-    width:46px;
-    height:46px;
-  }
+  .theme-sun-toggle{left:14px;top:16px;width:46px;height:46px}
 }
 @media(prefers-reduced-motion:reduce){
-  .theme-sun-toggle{
-    animation:none;
-  }
+  .theme-sun-toggle{animation:none}
 }
