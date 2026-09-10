@@ -295,8 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-// Home-page wormhole: clicking it transitions into GitHub in exactly one new tab.
+// Home-page wormhole: one GitHub tab only, no navigation in the portfolio tab.
 (() => {
   if (!document.body.classList.contains('home-page')) return;
 
@@ -306,38 +305,41 @@ document.addEventListener('DOMContentLoaded', () => {
   const githubUrl = 'https://github.com/PrabalShahi';
   let busy = false;
 
-  const go = () => {
+  const openGitHub = () => {
     if (busy) return;
     busy = true;
 
-    // Open GitHub directly from the click gesture. No blank intermediary tab.
+    // Open exactly one GitHub tab directly from the user's click.
+    // The portfolio tab stays on the Home page throughout the visual transition.
     const destination = window.open(githubUrl, '_blank', 'noopener,noreferrer');
 
-    hole.classList.add('pulse');
+    hole.classList.add('wormhole-github-pulse');
 
-    const flash = document.createElement('span');
-    flash.className = 'wormhole-click-implosion';
-    hole.appendChild(flash);
+    const flare = document.createElement('span');
+    flare.className = 'wormhole-github-flare';
+    hole.appendChild(flare);
 
+    // Brief visual collapse into the wormhole, then leave the home page untouched.
     setTimeout(() => {
-      flash.remove();
-      hole.classList.remove('pulse');
+      flare.remove();
+      hole.classList.remove('wormhole-github-pulse');
       busy = false;
       if (destination && !destination.closed) {
         try { destination.focus(); } catch (_) {}
       }
-    }, 1200);
+    }, 1150);
 
+    // Only use same-tab fallback if the browser blocks opening a new tab.
     if (!destination) {
       window.location.href = githubUrl;
     }
   };
 
-  hole.addEventListener('click', go);
+  hole.addEventListener('click', openGitHub);
   hole.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      go();
+      openGitHub();
     }
   });
 })();
