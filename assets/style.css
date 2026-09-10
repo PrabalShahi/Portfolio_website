@@ -1285,3 +1285,45 @@ h1,h2,h3,.hero h1,.page-intro h1,.brand,.nav-pill a{
   65%{opacity:.9;transform:translate(-50%,-50%) scale(.95)}
   100%{opacity:0;transform:translate(-50%,-50%) scale(.06)}
 }
+
+/* Final GitHub wormhole alignment */
+.home-social-cluster.wormhole-only-cluster{
+  min-width:100px;
+  position:relative;
+  top:7px;
+  transform:none;
+}
+.wormhole-clickable{cursor:pointer;outline:none}
+.wormhole-clickable:hover{filter:grayscale(1) brightness(1.14)}
+.wormhole-github-pulse{animation:wormholeGithubPulseFinal .82s ease-out}
+@keyframes wormholeGithubPulseFinal{
+  0%{transform:scale(1);filter:grayscale(1)}
+  30%{transform:scale(1.08);filter:grayscale(1) brightness(1.18)}
+  58%{transform:scale(1.16);filter:grayscale(1) brightness(1.38)}
+  100%{transform:scale(1);filter:grayscale(1)}
+}
+.wormhole-github-flare{
+  position:absolute;
+  left:50%;top:48%;
+  width:44px;height:20px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.92);
+  pointer-events:none;
+  z-index:30;
+  transform:translate(-50%,-50%) scale(.25);
+  animation:wormholeGithubFlareFinal 1.05s cubic-bezier(.18,.74,.12,1) forwards;
+}
+.wormhole-github-flare::after{
+  content:"";
+  position:absolute;
+  inset:18%;
+  border-radius:50%;
+  background:radial-gradient(ellipse,#fff 0 7%,rgba(255,255,255,.35) 20%,transparent 70%);
+  filter:blur(2px);
+}
+@keyframes wormholeGithubFlareFinal{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.25)}
+  18%{opacity:1}
+  65%{opacity:.9;transform:translate(-50%,-50%) scale(.95)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(.06)}
+}
