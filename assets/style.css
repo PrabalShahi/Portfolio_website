@@ -1831,6 +1831,15 @@ html.light-mode body{
   background:#eeeeee !important;
   color:#2b2b2b;
 }
+html.light-mode .topbar{
+  filter:grayscale(1);
+  background:linear-gradient(180deg,rgba(7,7,7,.97),rgba(7,7,7,.78));
+  border-bottom-color:#202020;
+  backdrop-filter:blur(14px);
+}
+html.light-mode .topbar:after{
+  background:linear-gradient(90deg,transparent,#444 18%,#888 50%,#444 82%,transparent);
+}
 html.light-mode .grid-bg{
   filter:none;
   background:
@@ -1839,11 +1848,8 @@ html.light-mode .grid-bg{
     radial-gradient(circle at 50% 20%,rgba(0,0,0,.022),transparent 48%);
 }
 html.light-mode .stars{opacity:.22;filter:invert(1)}
-html.light-mode .topbar{filter:none}
 html.light-mode .brand b{color:#555}
 html.light-mode .pulsar-logo{filter:grayscale(1) brightness(.72)}
-html.light-mode .planet-label{color:#555}
-html.light-mode .planet-item.active .planet-label{color:#161616}
 html.light-mode .about-hero h1{color:#141414}
 html.light-mode .about-hero h1 .name-primary{color:#151515}
 html.light-mode .about-hero h1 .surname{color:#727272}
@@ -1927,35 +1933,51 @@ html.light-mode .resume-link{color:#222}
 html.light-mode .eyebrow{color:#484848}
 html.light-mode .page-intro h1{color:#171717}
 
-html.light-mode .planet{
-  filter:grayscale(1) brightness(.86) contrast(1.02);
-}
-html.light-mode .thread{
-  background:#777 !important;
-  opacity:.65;
-}
 
 /* Wormhole rings should go dark in light mode. */
-html.light-mode .social-wormhole .wormhole-ring,
-html.light-mode .social-wormhole .wormhole-throat{
-  border-color:rgba(30,30,30,.52) !important;
-  box-shadow:0 0 6px rgba(0,0,0,.08),inset 0 0 5px rgba(0,0,0,.05) !important;
-}
 html.light-mode .social-wormhole .wormhole-halo{
-  opacity:.32 !important;
-  filter:blur(5px) grayscale(1);
+  background:
+    radial-gradient(ellipse at 50% 50%,
+      rgba(20,20,20,.28) 0 9%,
+      rgba(20,20,20,.18) 10% 19%,
+      rgba(20,20,20,.09) 20% 36%,
+      rgba(20,20,20,.045) 37% 55%,
+      transparent 72%);
+}
+html.light-mode .social-wormhole .wormhole-ring{
+  border-color:rgba(10,10,10,.82) !important;
+  box-shadow:
+    0 0 5px rgba(0,0,0,.24),
+    0 0 12px rgba(0,0,0,.10),
+    inset 0 0 5px rgba(0,0,0,.12) !important;
+}
+html.light-mode .social-wormhole .wormhole-throat{
+  border-color:rgba(10,10,10,.92) !important;
+  box-shadow:
+    0 0 7px rgba(0,0,0,.28),
+    0 0 17px rgba(0,0,0,.12) !important;
+  background:
+    radial-gradient(ellipse at center,
+      #000 0 27%,
+      rgba(0,0,0,.96) 28% 53%,
+      rgba(0,0,0,.18) 54% 57%,
+      transparent 58%);
 }
 html.light-mode .social-wormhole .wormhole-core{
-  background:#0d0d0d !important;
-  box-shadow:0 0 7px rgba(0,0,0,.16) !important;
+  background:#000 !important;
+  box-shadow:
+    0 0 6px rgba(0,0,0,.34),
+    0 0 16px rgba(0,0,0,.14) !important;
 }
 html.light-mode .social-wormhole .wormhole-particle{
-  background:#303030 !important;
-  box-shadow:0 0 6px rgba(0,0,0,.2) !important;
+  background:#000 !important;
+  box-shadow:0 0 6px rgba(0,0,0,.55) !important;
 }
-html.light-mode .social-wormhole .wormhole-beam{
-  opacity:.22 !important;
-  background:linear-gradient(to bottom,transparent,rgba(0,0,0,.25),transparent) !important;
+html.light-mode .social-wormhole .wormhole-github-flare{
+  border-color:rgba(0,0,0,.95) !important;
+}
+html.light-mode .social-wormhole .wormhole-github-flare::after{
+  background:radial-gradient(ellipse,#000 0 7%,rgba(0,0,0,.35) 20%,transparent 70%);
 }
 
 /* The owl closes its eyes and becomes perfectly still in light mode. */
@@ -2037,8 +2059,16 @@ html.light-mode .sun-rays{
   box-shadow:0 -21px 0 #dfa936,0 21px 0 #dfa936,21px 0 0 #dfa936,-21px 0 0 #dfa936,
              15px -15px 0 #dfa936,-15px -15px 0 #dfa936,15px 15px 0 #dfa936,-15px 15px 0 #dfa936;
 }
-.theme-sun-toggle{animation:sunFloat 5.5s ease-in-out infinite}
-@keyframes sunFloat{0%,100%{rotate:0deg}50%{rotate:4deg}}
+@keyframes sunAttention{
+  0%,100%{transform:rotate(0deg) scale(1)}
+  50%{transform:rotate(4deg) scale(1.03)}
+}
+.theme-sun-toggle{
+  animation:sunAttention 5.5s ease-in-out infinite;
+}
+.theme-sun-toggle:active{
+  transform:scale(.96);
+}
 @media(max-width:780px){
   .theme-sun-toggle{left:14px;top:16px;width:46px;height:46px}
 }
