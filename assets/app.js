@@ -344,42 +344,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
-
-// Global persistent dark/light mode.
-// Dark mode is the default only when no preference has been saved.
-// Clicking the About-page sun stores the selected theme for every portfolio page.
+// About-page dark/light theme switch.
+// Dark mode is always the initial state; light mode is temporary for the current page.
 (() => {
-  const STORAGE_KEY = 'prabal-theme';
-
-  const getTheme = () => {
-    try { return localStorage.getItem(STORAGE_KEY) || 'dark'; }
-    catch (_) { return 'dark'; }
-  };
-
-  const applyTheme = (theme) => {
-    const light = theme === 'light';
-    document.documentElement.classList.toggle('light-mode', light);
-    document.documentElement.dataset.theme = light ? 'light' : 'dark';
-
-    const sun = document.querySelector('.theme-sun-toggle');
-    if (sun) {
-      sun.setAttribute('aria-pressed', String(light));
-      sun.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
-    }
-  };
-
-  // Always resolve theme from the saved site preference before the page is interactive.
-  applyTheme(getTheme());
-
   const sun = document.querySelector('.theme-sun-toggle');
   if (!sun) return;
 
+  const setLightMode = (enabled) => {
+    document.body.classList.toggle('light-mode', enabled);
+    sun.setAttribute('aria-pressed', String(enabled));
+    sun.setAttribute('aria-label', enabled ? 'Switch to dark mode' : 'Switch to light mode');
+  };
+
+  // Explicitly force dark mode on page load.
+  setLightMode(false);
+
   sun.addEventListener('click', () => {
-    const next = document.documentElement.classList.contains('light-mode') ? 'dark' : 'light';
-
-    try { localStorage.setItem(STORAGE_KEY, next); }
-    catch (_) {}
-
-    applyTheme(next);
+    setLightMode(!document.body.classList.contains('light-mode'));
   });
 })();
