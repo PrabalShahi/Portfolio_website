@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// Home-page GH / LinkedIn wormhole transition.
+// Refined GH / LinkedIn wormhole transition on the home page.
 (() => {
   if (!document.body.classList.contains('home-page')) return;
 
@@ -304,31 +304,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const links = [...cluster.querySelectorAll('.socials a')];
 
-  const navigateAfterWormhole = (url, target, popup) => {
-    if (popup && !popup.closed) {
-      popup.location.href = url;
-    } else if (target === '_blank') {
-      window.location.href = url;
-    } else {
-      window.location.href = url;
-    }
-  };
-
   links.forEach((link) => {
     link.addEventListener('click', (event) => {
-      event.preventDefault();
-
       if (cluster.dataset.wormholeBusy === '1') return;
+      event.preventDefault();
       cluster.dataset.wormholeBusy = '1';
 
-      // Open the destination synchronously so popup blockers do not kill the final navigation.
-      const target = link.getAttribute('target');
-      let popup = null;
-      if (target === '_blank') {
-        popup = window.open('about:blank', '_blank', 'noopener,noreferrer');
-        if (!popup) {
+      // Open the target tab immediately so browser popup blocking cannot prevent it.
+      // Keep it blank until the wormhole animation completes.
+      let destinationWindow = null;
+      if (link.target === '_blank') {
+        destinationWindow = window.open('about:blank', '_blank', 'noopener,noreferrer');
+        if (!destinationWindow) {
           cluster.dataset.wormholeBusy = '0';
-          window.location.href = link.href;
+          window.open(link.href, '_blank', 'noopener,noreferrer');
           return;
         }
       }
@@ -336,73 +325,91 @@ document.addEventListener('DOMContentLoaded', () => {
       const b = link.getBoundingClientRect();
       const h = hole.getBoundingClientRect();
 
-      const startX = b.left;
-      const startY = b.top;
-      const startCX = b.left + b.width / 2;
-      const startCY = b.top + b.height / 2;
-      const endCX = h.left + h.width / 2;
-      const endCY = h.top + h.height / 2;
-
-      const dx = endCX - startCX;
-      const dy = endCY - startCY;
+      const sx = b.left + b.width * .5;
+      const sy = b.top + b.height * .5;
+      const hx = h.left + h.width * .5;
+      const hy = h.top + h.height * .5;
+      const dx = hx - sx;
+      const dy = hy - sy;
 
       const clone = link.cloneNode(true);
       clone.className = 'wormhole-button-clone';
       clone.textContent = link.textContent;
       clone.removeAttribute('href');
       clone.removeAttribute('target');
-      clone.style.left = `${startX}px`;
-      clone.style.top = `${startY}px`;
+      clone.style.left = `${b.left}px`;
+      clone.style.top = `${b.top}px`;
       clone.style.width = `${b.width}px`;
       clone.style.height = `${b.height}px`;
 
       const side = link === links[0] ? -1 : 1;
-
-      clone.style.setProperty('--wx1', `${dx * .22}px`);
-      clone.style.setProperty('--wy1', `${dy * .20 - 3}px`);
-      clone.style.setProperty('--wx2', `${dx * .45 + side * 4}px`);
-      clone.style.setProperty('--wy2', `${dy * .43 - 5}px`);
-      clone.style.setProperty('--wx3', `${dx * .68}px`);
-      clone.style.setProperty('--wy3', `${dy * .70}px`);
-      clone.style.setProperty('--wx4', `${dx * .86}px`);
-      clone.style.setProperty('--wy4', `${dy * .86}px`);
-      clone.style.setProperty('--wx5', `${dx}px`);
-      clone.style.setProperty('--wy5', `${dy}px`);
-      clone.style.setProperty('--wrot', `${side * 5}deg`);
-      clone.style.setProperty('--wrot2', `${side * 12}deg`);
-      clone.style.setProperty('--wrot3', `${side * 23}deg`);
-      clone.style.setProperty('--wrot4', `${side * 42}deg`);
-      clone.style.setProperty('--wrot5', `${side * 68}deg`);
+      clone.style.setProperty('--wx1', `${dx * .18}px`);
+      clone.style.setProperty('--wy1', `${dy * .13 - 3}px`);
+      clone.style.setProperty('--wx2', `${dx * .38}px`);
+      clone.style.setProperty('--wy2', `${dy * .30 - 7}px`);
+      clone.style.setProperty('--wx3', `${dx * .57 + side * 4}px`);
+      clone.style.setProperty('--wy3', `${dy * .48 - 10}px`);
+      clone.style.setProperty('--wx4', `${dx * .72}px`);
+      clone.style.setProperty('--wy4', `${dy * .66 - 5}px`);
+      clone.style.setProperty('--wx5', `${dx * .87}px`);
+      clone.style.setProperty('--wy5', `${dy * .86}px`);
+      clone.style.setProperty('--wx6', `${dx}px`);
+      clone.style.setProperty('--wy6', `${dy}px`);
+      clone.style.setProperty('--r1', `${side * 4}deg`);
+      clone.style.setProperty('--r2', `${side * 11}deg`);
+      clone.style.setProperty('--r3', `${side * 19}deg`);
+      clone.style.setProperty('--r4', `${side * 29}deg`);
+      clone.style.setProperty('--r5', `${side * 45}deg`);
+      clone.style.setProperty('--r6', `${side * 72}deg`);
 
       document.body.appendChild(clone);
       link.style.visibility = 'hidden';
-
       hole.classList.add('pulse');
 
-      // Draw a short-lived stream of particles from the button into the throat.
-      for (let i = 0; i < 13; i++) {
-        const p = document.createElement('span');
-        p.className = 'wormhole-particle fly';
-        p.style.left = `${startCX + (Math.random() - .5) * 12}px`;
-        p.style.top = `${startCY + (Math.random() - .5) * 12}px`;
-        p.style.setProperty('--pdx', `${dx * (.55 + Math.random() * .42)}px`);
-        p.style.setProperty('--pdy', `${dy * (.55 + Math.random() * .42) + (Math.random() - .5) * 14}px`);
-        p.style.animationDelay = `${i * 24}ms`;
-        document.body.appendChild(p);
-        setTimeout(() => p.remove(), 1200);
+      // Matter streaks moving into the throat.
+      for (let i = 0; i < 14; i++) {
+        const particle = document.createElement('span');
+        particle.className = 'wormhole-particle fly';
+        particle.style.position = 'fixed';
+        particle.style.left = `${sx + (Math.random() - .5) * 10}px`;
+        particle.style.top = `${sy + (Math.random() - .5) * 10}px`;
+        particle.style.width = '3px';
+        particle.style.height = '3px';
+        particle.style.borderRadius = '50%';
+        particle.style.background = '#fff';
+        particle.style.boxShadow = '0 0 8px rgba(255,255,255,.9)';
+        particle.style.zIndex = '10001';
+        const pdx = dx * (.42 + Math.random() * .52);
+        const pdy = dy * (.42 + Math.random() * .52) + (Math.random() - .5) * 18;
+        particle.style.setProperty('--pdx', `${pdx}px`);
+        particle.style.setProperty('--pdy', `${pdy}px`);
+        particle.animate(
+          [
+            {opacity:.85, transform:'translate(0,0) scale(1)'},
+            {opacity:0, transform:`translate(${pdx}px,${pdy}px) scale(.08)`}
+          ],
+          {duration:900 + Math.random()*220, delay:i*20, easing:'cubic-bezier(.25,.7,.15,1)', fill:'forwards'}
+        );
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1300);
       }
 
-      // Navigate only after the visual transition has completed.
+      // When the visual transition finishes, reveal the real destination in a new tab.
       setTimeout(() => {
-        navigateAfterWormhole(link.href, target, popup);
-      }, 1700);
+        if (destinationWindow && !destinationWindow.closed) {
+          destinationWindow.location.href = link.href;
+          destinationWindow.focus();
+        } else {
+          window.open(link.href, '_blank', 'noopener,noreferrer');
+        }
+      }, 1900);
 
       setTimeout(() => {
         clone.remove();
         link.style.visibility = '';
         hole.classList.remove('pulse');
         cluster.dataset.wormholeBusy = '0';
-      }, 1860);
+      }, 2050);
     });
   });
 })();
