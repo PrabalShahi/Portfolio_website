@@ -2237,9 +2237,11 @@ body.light-mode .topbar:after{
 }
 body.light-mode .topbar .brand{
   color:#262626 !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.28) !important;
 }
 body.light-mode .topbar .brand b{
   color:#111 !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.32) !important;
 }
 body.light-mode .topbar .pulsar-logo{
   filter:grayscale(1) brightness(.72) !important;
@@ -2252,4 +2254,19 @@ body.light-mode .topbar .socials a{
 body.light-mode .topbar .socials a:hover{
   color:#111 !important;
   border-color:#888 !important;
+}
+
+/* Light mode: make planetary page labels and suspension threads clearly visible. */
+body.light-mode .planet-item .planet-label{
+  color:#262626 !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.24),0 1px 1px rgba(255,255,255,.55) !important;
+}
+body.light-mode .planet-item:hover .planet-label,
+body.light-mode .planet-item.active .planet-label{
+  color:#111111 !important;
+  text-shadow:0 2px 6px rgba(0,0,0,.28),0 1px 1px rgba(255,255,255,.5) !important;
+}
+body.light-mode .planet-item .thread{
+  background:linear-gradient(to bottom,#5b5b5b,#202020) !important;
+  box-shadow:0 0 4px rgba(0,0,0,.28) !important;
 }
